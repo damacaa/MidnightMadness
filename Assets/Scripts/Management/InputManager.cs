@@ -17,8 +17,18 @@ public class InputManager : MonoBehaviour
         float y = Input.GetAxis("Vertical");
         PlayerController.instance.movementController.Move(x, y);
 
-        if (Input.GetMouseButtonDown(0)){
+        if (Input.GetMouseButton(0)){
             PlayerController.instance.attackController.Attack();
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            PlayerController.instance.attackController.Release();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            PlayerController.instance.attackController.Reload();
         }
     }
 }

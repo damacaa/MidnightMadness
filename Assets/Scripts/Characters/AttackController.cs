@@ -5,17 +5,36 @@ using UnityEngine;
 public class AttackController : MonoBehaviour
 {
     public Transform handPos;
-    WeaponController weapon = null;
-    
+    public WeaponController weapon = null;
+
     // Start is called before the first frame update
 
     // Update is called once per frame
     public void Attack()
     {
-        if(weapon!= null)
+        if (weapon != null)
         {
             weapon.Shoot();
         }
+    }
+
+    public void Reload()
+    {
+        if (weapon != null)
+            weapon.Reload();
+    }
+
+    public void Release()
+    {
+        if (weapon != null)
+            weapon.ReleaseTrigger();
+    }
+
+    public string GetAmmoString()
+    {
+        if (weapon != null)
+            return weapon.ammoInMag.ToString() + "/" + weapon.ammo.ToString();
+        return "-/-";
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
