@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
-    public GameObject bulletPrefab;
+    public BulletType bulletType = BulletType.Normal;
+
     internal Rigidbody2D rigidBody;
     public enum ShootingMode
     {
@@ -70,7 +71,9 @@ public class WeaponController : MonoBehaviour
     {
         Vector3 dir = exitPoint.position - transform.position;
         dir.Normalize();
-        BulletBehaviour bullet = GameObject.Instantiate(bulletPrefab, exitPoint.position, Quaternion.identity).GetComponent<BulletBehaviour>();
+        BulletBehaviour bullet = BulletPool.instance.GetABullet(bulletType).GetComponent<BulletBehaviour>();
+        bullet.transform.position = exitPoint.position;
+        bullet.transform.rotation = exitPoint.rotation;
         bullet.Shoot(transform.up, bulletVelocity);
         ammoInMag--;
         if (ammoInMag <= 0)

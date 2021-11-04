@@ -40,7 +40,7 @@ public class EnemyFactoryManager : MonoBehaviour
         BulletBehaviour[] bullets = FindObjectsOfType<BulletBehaviour>();
         foreach (BulletBehaviour bullet in bullets)
         {
-            Destroy(bullet.gameObject);
+            bullet.gameObject.SetActive(false);
         }
 
         Continue();
