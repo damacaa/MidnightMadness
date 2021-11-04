@@ -54,13 +54,13 @@ public class WeaponController : MonoBehaviour
             if (shootingMode == ShootingMode.SemiAutomatic && triggerReleased)
             {
                 triggerReleased = false;
-                nextShootTime = Time.time + (1 / rateOfFire);
+                nextShootTime = Time.time + (1f / rateOfFire);
                 ShootBullet();
             }
 
             if (shootingMode == ShootingMode.Automatic)
             {
-                nextShootTime = Time.time + (1 / rateOfFire);
+                nextShootTime = Time.time + (1f / rateOfFire);
                 ShootBullet();
             }
         }
