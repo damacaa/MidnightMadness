@@ -37,11 +37,7 @@ public class DialogManager : MonoBehaviour
     void Start()
     {
         dialogBox.enabled = false;
-        AddDialog("Hola.", transform);
-        AddDialog("Hola, ¿qué tal estás?", PlayerController.instance.transform);
-        AddDialog("Muy bien, gracias.", transform);
-
-        StartDialog();
+        dialogText.enabled = false;
     }
 
     public void AddDialog(string text, Transform target)
@@ -52,6 +48,7 @@ public class DialogManager : MonoBehaviour
     public void StartDialog()
     {
         ShowDialog(dialogQueue.Dequeue());
+        PlayerController.instance.movementController.Move(0,0);
     }
 
     void ShowDialog(Dialog dialog)
