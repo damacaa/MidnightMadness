@@ -42,6 +42,8 @@ public class EnemyFactoryManager : MonoBehaviour
         {
             Destroy(bullet.gameObject);
         }
+
+        Continue();
     }
 
     public void Pause()
@@ -52,6 +54,6 @@ public class EnemyFactoryManager : MonoBehaviour
     public void Continue()
     {
         working = true;
-        nextSpawnTime = Time.time + (2 * spawnWait);
+        nextSpawnTime = Time.time + spawnWait;
     }
 }

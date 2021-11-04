@@ -37,9 +37,20 @@ public class DialogManager : MonoBehaviour
     void Start()
     {
         dialogBox.enabled = false;
-        dialogQueue.Enqueue(new Dialog("Hola.", transform));
-        dialogQueue.Enqueue(new Dialog("Hola, ¿qué tal estás?", PlayerController.instance.transform));
-        dialogQueue.Enqueue(new Dialog("Muy bien, gracias.", transform));
+        AddDialog("Hola.", transform);
+        AddDialog("Hola, ¿qué tal estás?", PlayerController.instance.transform);
+        AddDialog("Muy bien, gracias.", transform);
+
+        StartDialog();
+    }
+
+    public void AddDialog(string text, Transform target)
+    {
+        dialogQueue.Enqueue(new Dialog(text, target));
+    }
+
+    public void StartDialog()
+    {
         ShowDialog(dialogQueue.Dequeue());
     }
 
