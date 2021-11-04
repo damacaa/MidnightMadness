@@ -4,15 +4,35 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
+    public static InputManager instance;
 
+    public bool locked = false;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.anyKeyDown)
+        {
+            DialogManager.instance.NextDialog();
+        }
+
+        if (locked)
+        {
+            return;
+        }
+
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         PlayerController.instance.movementController.Move(x, y);
@@ -35,5 +55,7 @@ public class InputManager : MonoBehaviour
         {
             PlayerController.instance.attackController.Reload();
         }
+
+        
     }
 }

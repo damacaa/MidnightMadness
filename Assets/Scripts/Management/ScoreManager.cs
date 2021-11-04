@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,5 +29,11 @@ public class ScoreManager : MonoBehaviour
     private void ResetMultiplier()
     {
         multiplier = 1;
+    }
+
+    internal void Reset()
+    {
+        ResetMultiplier();
+        score = 0;
     }
 }

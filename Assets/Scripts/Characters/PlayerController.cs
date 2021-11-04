@@ -32,4 +32,13 @@ public class PlayerController : CharacterController
         if (collision.collider.tag == "Bullet")
             Die();
     }
+
+    public new void Die()
+    {
+        attackController.Reload();
+        attackController.DropWeapon();
+        EnemyFactoryManager.instance.Restart();
+        ScoreManager.instance.Reset();
+        transform.position = Vector2.zero;
+    }
 }
