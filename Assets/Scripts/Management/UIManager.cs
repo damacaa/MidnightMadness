@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
     public Text scoreText;
+    public Text ammoText;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -21,5 +22,6 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         scoreText.text = Mathf.RoundToInt(ScoreManager.instance.score).ToString();
+        ammoText.text = PlayerController.instance.attackController.GetAmmoString();
     }
 }

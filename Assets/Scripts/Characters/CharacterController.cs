@@ -26,4 +26,8 @@ public class CharacterController : MonoBehaviour
         isAwake = true;
         yield return null;
     }
+
+    protected virtual void Die() {
+        Debug.Log("Ouch");
+    }
 }

@@ -7,6 +7,7 @@ public class PlayerController : CharacterController
     public static PlayerController instance;
     public AttackController attackController;
     public MovementController movementController;
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -14,14 +15,21 @@ public class PlayerController : CharacterController
         attackController = GetComponent<AttackController>();
         movementController = GetComponent<MovementController>();
     }
-    void Start()
+
+    private void Update()
     {
-        
+        // convert mouse position into world coordinates
+        Vector2 mouseScreenPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // get direction you want to point at
+        Vector2 direction = (mouseScreenPosition - (Vector2)transform.position).normalized;
+        // set vector of transform directly
+        transform.up = direction;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        
+        //Debug.Log("Collison with: "+collision.gameObject.name);
+        if (collision.collider.tag == "Bullet")
+            Die();
     }
 }
