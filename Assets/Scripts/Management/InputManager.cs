@@ -26,6 +26,11 @@ public class InputManager : MonoBehaviour
             PlayerController.instance.attackController.Release();
         }
 
+        if (Input.GetMouseButton(1))
+        {
+            PlayerController.instance.attackController.DropWeapon();
+        }
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             PlayerController.instance.attackController.Reload();

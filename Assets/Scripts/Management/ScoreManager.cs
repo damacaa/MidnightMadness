@@ -22,6 +22,7 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int s)
     {
         score += s * multiplier;
+        multiplier += s/100f;
     }
 
     private void ResetMultiplier()

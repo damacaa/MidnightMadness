@@ -10,6 +10,19 @@ public class AttackController : MonoBehaviour
     // Start is called before the first frame update
 
     // Update is called once per frame
+    private void Start()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).TryGetComponent<WeaponController>(out weapon);
+        }
+
+        if (weapon != null)
+        {
+            PickupWeapon(weapon);
+        }
+    }
+
     public void Attack()
     {
         if (weapon != null)
@@ -37,14 +50,44 @@ public class AttackController : MonoBehaviour
         return "-/-";
     }
 
+    void PickupWeapon(WeaponController weap)
+    {
+        weapon = weap;
+        weapon.GetComponent<Collider2D>().enabled = false;
+        weapon.rigidBody.velocity = Vector2.zero;
+        weapon.rigidBody.angularVelocity = 0;
+        weapon.rigidBody.isKinematic = true;
+        weapon.transform.position = handPos.position;
+        weapon.transform.rotation = handPos.rotation;
+        weapon.transform.parent = handPos;
+    }
+
+    public void DropWeapon()
+    {
+        if (weapon == null)
+            return;
+        weapon.transform.parent = null;
+        weapon.rigidBody.isKinematic = false;
+        weapon.GetComponent<Collider2D>().enabled = true;
+        weapon.rigidBody.velocity = Vector2.zero;
+        weapon.rigidBody.AddForce(transform.up * 100);
+        weapon.rigidBody.AddTorque(-3f);
+        weapon = null;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Weapon")
+        if (collision.tag == "Weapon" && weapon == null)
         {
-            collision.transform.position = handPos.position;
-            collision.transform.rotation = handPos.rotation;
-            collision.transform.parent = handPos;
-            weapon = collision.GetComponent<WeaponController>();
+            PickupWeapon(collision.GetComponent<WeaponController>());
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Weapon" && weapon == null)
+        {
+            PickupWeapon(collision.collider.GetComponent<WeaponController>());
         }
     }
 }

@@ -21,13 +21,6 @@ public class MovementController : MonoBehaviour
     //Needs to go somewhere else
     void Update()
     {
-        // convert mouse position into world coordinates
-        Vector2 mouseScreenPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        // get direction you want to point at
-        Vector2 direction = (mouseScreenPosition - (Vector2)transform.position).normalized;
-
-        // set vector of transform directly
-        transform.up = direction;
+        
     }
 }

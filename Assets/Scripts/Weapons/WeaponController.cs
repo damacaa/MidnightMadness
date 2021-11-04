@@ -6,6 +6,7 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     public GameObject bulletPrefab;
+    internal Rigidbody2D rigidBody;
     public enum ShootingMode
     {
         Automatic,
@@ -25,6 +26,10 @@ public class WeaponController : MonoBehaviour
 
     public Transform exitPoint;
 
+    private void Awake()
+    {
+        rigidBody = GetComponent<Rigidbody2D>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -44,18 +49,21 @@ public class WeaponController : MonoBehaviour
         if (reloading || ammoInMag <= 0)
             return;
 
-        if (shootingMode == ShootingMode.SemiAutomatic && triggerReleased)
+        if(Time.time > nextShootTime)
         {
-            triggerReleased = false;
-            ShootBullet();
-        }
+            if (shootingMode == ShootingMode.SemiAutomatic && triggerReleased)
+            {
+                triggerReleased = false;
+                nextShootTime = Time.time + (1 / rateOfFire);
+                ShootBullet();
+            }
 
-        if (shootingMode == ShootingMode.Automatic && Time.time > nextShootTime)
-        {
-            nextShootTime = Time.time + (1 / (rateOfFire / 60));
-            ShootBullet();
+            if (shootingMode == ShootingMode.Automatic)
+            {
+                nextShootTime = Time.time + (1 / rateOfFire);
+                ShootBullet();
+            }
         }
-
     }
 
     private void ShootBullet()
