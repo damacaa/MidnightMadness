@@ -11,7 +11,14 @@ public class PlayerController : CharacterController
     // Start is called before the first frame update
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         attackController = GetComponent<AttackController>();
         movementController = GetComponent<MovementController>();
     }

@@ -1,14 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour
 {
     public static DialogManager instance;
 
-    public Image dialogBox;
-    public Text dialogText;
+    public static DialogZoneBehaviour selectedZone = null;
+    public static UnityEvent endEvent;
+
+    
+
+    public static bool dialogStarted = false;
 
     bool creatingDialog = false;
     bool dialogReady = false;
@@ -36,13 +41,17 @@ public class DialogManager : MonoBehaviour
 
     void Start()
     {
-        dialogBox.enabled = false;
-        dialogText.enabled = false;
+       
     }
 
     public void AddDialog(string text, Transform target)
     {
         dialogQueue.Enqueue(new Dialog(text, target));
+    }
+
+    public void AddDialog(Dialog dialog)
+    {
+        dialogQueue.Enqueue(dialog);
     }
 
     public void StartDialog()
@@ -58,8 +67,9 @@ public class DialogManager : MonoBehaviour
 
         currentDialog = dialog;
 
-        dialogBox.enabled = true;
-        dialogText.enabled = true;
+        dialogStarted = true;
+
+        UIManager.instance.ShowDialog();
 
         CameraFollowCharacter.instance.LookAt(dialog.target);
         InputManager.instance.locked = true;
@@ -73,11 +83,11 @@ public class DialogManager : MonoBehaviour
     {
         creatingDialog = true;
 
-        dialogText.text = "";
+        UIManager.instance.dialogText.text = "";
         float wait = 1f / speed;
         for (int i = 0; i < text.Length; i++)
         {
-            dialogText.text += text[i];
+            UIManager.instance.dialogText.text += text[i];
             yield return new WaitForSeconds(wait);
         }
 
@@ -91,7 +101,7 @@ public class DialogManager : MonoBehaviour
         if (creatingDialog)
         {
             StopCoroutine(dialogCoroutine);
-            dialogText.text = currentDialog.text;
+            UIManager.instance.dialogText.text = currentDialog.text;
 
             creatingDialog = false;
             dialogReady = true;
@@ -114,16 +124,23 @@ public class DialogManager : MonoBehaviour
         if (dialogReady)
         {
             dialogReady = false;
-            dialogBox.enabled = false;
-            dialogText.enabled = false;
+            dialogStarted = false;
+            UIManager.instance.HideDialog();
 
             CameraFollowCharacter.instance.BackToNormal();
             InputManager.instance.locked = false;
             EnemyFactoryManager.instance.Continue();
+
+            if (endEvent != null)
+            {
+                endEvent.Invoke();
+                endEvent = null;
+            }
         }
     }
 }
 
+[System.Serializable]
 public class Dialog
 {
     public string text = "";

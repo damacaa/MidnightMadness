@@ -8,14 +8,26 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
     public Text scoreText;
     public Text ammoText;
+    public Text interactText;
+
+    public Image dialogBox;
+    public Text dialogText;
     // Start is called before the first frame update
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
     void Start()
     {
-
+        HideInteract();
+        HideDialog();
     }
 
     // Update is called once per frame
@@ -23,5 +35,27 @@ public class UIManager : MonoBehaviour
     {
         scoreText.text = Mathf.RoundToInt(ScoreManager.instance.score).ToString();
         ammoText.text = PlayerController.instance.attackController.GetAmmoString();
+    }
+
+    public void ShowInteract()
+    {
+        interactText.enabled = true;
+    }
+
+    public void HideInteract()
+    {
+        interactText.enabled = false;
+    }
+
+    public void ShowDialog()
+    {
+        dialogBox.enabled = true;
+        dialogText.enabled = true;
+    }
+
+    public void HideDialog()
+    {
+        dialogBox.enabled = false;
+        dialogText.enabled = false;
     }
 }

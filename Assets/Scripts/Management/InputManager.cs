@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour
 
     public bool locked = false;
 
+
     private void Awake()
     {
         if (instance == null)
@@ -23,7 +24,13 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.anyKeyDown)
+
+
+        if (DialogManager.selectedZone != null && Input.GetKeyDown(KeyCode.E) && !DialogManager.dialogStarted)
+        {
+            DialogManager.selectedZone.StartDialog();
+        }
+        else if (Input.anyKeyDown && DialogManager.dialogStarted)
         {
             DialogManager.instance.NextDialog();
         }
@@ -37,11 +44,11 @@ public class InputManager : MonoBehaviour
         float y = Input.GetAxis("Vertical");
         PlayerController.instance.movementController.Move(x, y);
 
-        if (Input.GetMouseButton(0)){
+        if (Input.GetMouseButton(0))
+        {
             PlayerController.instance.attackController.Attack();
         }
-
-        if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0))
         {
             PlayerController.instance.attackController.Release();
         }
@@ -56,6 +63,6 @@ public class InputManager : MonoBehaviour
             PlayerController.instance.attackController.Reload();
         }
 
-        
+
     }
 }

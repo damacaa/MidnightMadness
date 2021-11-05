@@ -9,9 +9,19 @@ public class EnemyFactoryManager : MonoBehaviour
     public float spawnWait;
     float nextSpawnTime;
     private bool working = true;
+
+    public Transform[] spawnPoints;
+
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Start()
@@ -22,11 +32,16 @@ public class EnemyFactoryManager : MonoBehaviour
     {
         if (working && Time.time > nextSpawnTime)
         {
-            nextSpawnTime = Time.time + spawnWait;
-            float x = Random.Range(-5f, 5f);
-            float y = Random.Range(-3f, 3f);
-            GameObject.Instantiate(enemyPrefab, new Vector2(x, y), Quaternion.identity);
+            SpawnEnemy();
         }
+    }
+
+    private void SpawnEnemy()
+    {
+        nextSpawnTime = Time.time + spawnWait;
+        int spawnPoint = Random.Range(0, spawnPoints.Length);
+
+        GameObject.Instantiate(enemyPrefab, spawnPoints[spawnPoint].position, Quaternion.identity);
     }
 
     internal void Restart()
