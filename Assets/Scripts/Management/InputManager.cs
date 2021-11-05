@@ -24,6 +24,11 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.gameEnd && Input.anyKeyDown)
+        {
+            GameManager.instance.RestartGame();
+            return;
+        }
 
 
         if (DialogManager.selectedZone != null && Input.GetKeyDown(KeyCode.E) && !DialogManager.dialogStarted)

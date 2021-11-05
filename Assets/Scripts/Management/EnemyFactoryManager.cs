@@ -46,18 +46,6 @@ public class EnemyFactoryManager : MonoBehaviour
 
     internal void Restart()
     {
-        EnemyBehaviour[] enemies = FindObjectsOfType<EnemyBehaviour>();
-        foreach (EnemyBehaviour enemy in enemies)
-        {
-            Destroy(enemy.gameObject);
-        }
-
-        BulletBehaviour[] bullets = FindObjectsOfType<BulletBehaviour>();
-        foreach (BulletBehaviour bullet in bullets)
-        {
-            bullet.gameObject.SetActive(false);
-        }
-
         Continue();
     }
 

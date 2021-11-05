@@ -7,6 +7,7 @@ public class PlayerController : CharacterController
     public static PlayerController instance;
     public AttackController attackController;
     public MovementController movementController;
+    public bool injured = false;
 
     // Start is called before the first frame update
     private void Awake()
@@ -37,15 +38,23 @@ public class PlayerController : CharacterController
     {
         //Debug.Log("Collison with: "+collision.gameObject.name);
         if (collision.collider.tag == "Bullet")
+            Hurt();
+    }
+
+    private void Hurt()
+    {
+        if (injured)
+        {
             Die();
+        }
+        else
+        {
+            injured = true;
+        }
     }
 
     public new void Die()
     {
-        attackController.Reload();
-        attackController.DropWeapon();
-        EnemyFactoryManager.instance.Restart();
-        ScoreManager.instance.Reset();
-        transform.position = Vector2.zero;
+        GameManager.instance.RestartGame();
     }
 }

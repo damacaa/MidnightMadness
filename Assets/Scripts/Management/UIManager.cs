@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +25,12 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    internal void ShowEnd()
+    {
+        throw new NotImplementedException();
+    }
+
     void Start()
     {
         HideInteract();
