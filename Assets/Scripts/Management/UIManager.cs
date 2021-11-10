@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
 
     public Image dialogBox;
     public Text dialogText;
+    public GameObject pauseMenu;
+    public GameObject pauseButton;
 
     public GameObject endMenu;
     // Start is called before the first frame update
@@ -44,6 +46,9 @@ public class UIManager : MonoBehaviour
     {
         HideInteract();
         HideDialog();
+        pauseMenu.SetActive(false);
+        pauseButton.SetActive(true);
+
     }
 
     // Update is called once per frame
@@ -74,4 +79,19 @@ public class UIManager : MonoBehaviour
         dialogBox.enabled = false;
         dialogText.enabled = false;
     }
+
+    public void ResumeGame()
+    {
+        pauseMenu.SetActive(false);
+        pauseButton.SetActive(true);
+        GameManager.ResumeGame();
+    }
+
+    public void PauseGame()
+    {
+        pauseMenu.SetActive(true);
+        pauseButton.SetActive(false);
+        GameManager.PauseGame();
+    }
+
 }
