@@ -7,6 +7,17 @@ public class AttackController : MonoBehaviour
     public Transform handPos;
     public WeaponController weapon = null;
 
+    public float Range
+    {
+        get
+        {
+            if (weapon != null)
+                return weapon.range;
+
+            return .1f;
+        }
+    }
+
     // Start is called before the first frame update
 
     // Update is called once per frame
@@ -28,6 +39,10 @@ public class AttackController : MonoBehaviour
         if (weapon != null)
         {
             weapon.Shoot();
+        }
+        else
+        {
+            MeleeAttack();
         }
     }
 
@@ -69,27 +84,55 @@ public class AttackController : MonoBehaviour
         weapon.transform.parent = null;
         weapon.rigidBody.isKinematic = false;
         weapon.GetComponent<Collider2D>().enabled = true;
-        weapon.rigidBody.velocity = Vector2.zero;
-        weapon.rigidBody.AddForce(transform.up * 100);
+        //weapon.rigidBody.velocity = Vector2.zero;
+        weapon.rigidBody.AddForce(transform.up * 300);
         weapon.rigidBody.AddTorque(-3f);
         weapon.StopAllCoroutines();
         weapon.reloading = false;
+        weapon.flying = true;
         weapon = null;
+    }
+
+    public void MeleeAttack()
+    {
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(handPos.position, Range, transform.up);
+        for (int i = 0; i < hits.Length; i++)
+        {
+            if (hits[i].collider.gameObject == gameObject)
+                continue;
+
+            CharacterController cc;
+            if (hits[i].collider.gameObject.TryGetComponent<CharacterController>(out cc))
+            {
+                Vector2 dir = hits[i].collider.transform.position - transform.position;
+                dir.Normalize();
+                cc.Stun(3f, dir);
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Weapon" && weapon == null)
+        /*if (collision.tag == "Weapon" && weapon == null)
         {
             PickupWeapon(collision.GetComponent<WeaponController>());
-        }
+        }*/
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Weapon" && weapon == null)
+        if (collision.collider.tag == "Weapon")
         {
-            PickupWeapon(collision.collider.GetComponent<WeaponController>());
+            if (collision.collider.GetComponent<WeaponController>().flying)
+            {
+                GetComponent<CharacterController>().Stun(1f, -collision.collider.GetComponent<Rigidbody2D>().velocity.normalized);
+            }
+            else
+            {
+                if (weapon == null)
+                    PickupWeapon(collision.collider.GetComponent<WeaponController>());
+            }
         }
     }
 }

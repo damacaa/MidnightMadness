@@ -68,7 +68,7 @@ public class DialogManager : MonoBehaviour
         currentDialog = dialog;
 
         dialogStarted = true;
-        GameManager.PauseGame();
+        GameManager.pause = true;
 
         UIManager.instance.ShowDialog();
 
@@ -131,7 +131,7 @@ public class DialogManager : MonoBehaviour
             CameraFollowCharacter.instance.BackToNormal();
             InputManager.instance.locked = false;
             EnemyFactoryManager.instance.Continue();
-            GameManager.ResumeGame();
+            GameManager.pause = false;
 
             if (endEvent != null)
             {

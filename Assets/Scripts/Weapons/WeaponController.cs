@@ -18,12 +18,15 @@ public class WeaponController : MonoBehaviour
 
     public int rateOfFire = 100;
     public int bulletVelocity = 10;
+    public float range = 3;
 
     internal int ammoInMag;
     public int magSize = 10;
     public int ammo = 30;
     public float reloadTime;
     public bool reloading = false;
+
+    internal bool flying = false;
 
     public Transform exitPoint;
 
@@ -39,18 +42,24 @@ public class WeaponController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
 
+        if (flying && rigidBody.velocity.magnitude > 0 && rigidBody.velocity.magnitude < .5f)
+        {
+            flying = false;
+        }
     }
 
     float nextShootTime = 0;
+
+
     internal void Shoot()
     {
         if (reloading || ammoInMag <= 0)
             return;
 
-        if(Time.time > nextShootTime)
+        if (Time.time > nextShootTime)
         {
             if (shootingMode == ShootingMode.SemiAutomatic && triggerReleased)
             {

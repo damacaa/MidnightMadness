@@ -5,13 +5,17 @@ using UnityEngine;
 public class PlayerController : CharacterController
 {
     public static PlayerController instance;
-    public AttackController attackController;
-    public MovementController movementController;
+
+
     public bool injured = false;
 
-    // Start is called before the first frame update
-    private void Awake()
+    private void Start()
     {
+
+    }
+    private new void Awake()
+    {
+        base.Awake();
         if (instance == null)
         {
             instance = this;
@@ -29,12 +33,7 @@ public class PlayerController : CharacterController
         if (GameManager.gameEnd || GameManager.pause || !isAwake)
             return;
 
-        // convert mouse position into world coordinates
-        Vector2 mouseScreenPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // get direction you want to point at
-        Vector2 direction = (mouseScreenPosition - (Vector2)transform.position).normalized;
-        // set vector of transform directly
-        transform.up = direction;
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -67,7 +66,7 @@ public class PlayerController : CharacterController
     public new void Die()
     {
         //GameManager.RestartGame();
-        movementController.Move(0,0);
+        movementController.Move(0, 0);
         GameManager.EndGame();
     }
 }
