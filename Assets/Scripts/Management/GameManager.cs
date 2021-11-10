@@ -64,12 +64,12 @@ public class GameManager : MonoBehaviour
     public static void PauseGame()
     {
         pause = true;
-        //Time.timeScale = 0;
+        Time.timeScale = 0;
     }
 
     public static void ResumeGame()
     {
         pause = false;
-        //Time.timeScale = 1;
+        Time.timeScale = 1;
     }
 }
