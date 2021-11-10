@@ -31,7 +31,7 @@ public class ScoreManager : MonoBehaviour
         multiplier = 1;
     }
 
-    internal void Reset()
+    internal void Restart()
     {
         ResetMultiplier();
         score = 0;

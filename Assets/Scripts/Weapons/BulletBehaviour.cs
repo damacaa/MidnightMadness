@@ -15,13 +15,13 @@ public class BulletBehaviour : MonoBehaviour
     private void Update()
     {
         if (rb.velocity.magnitude < speed)
-            Destroy(gameObject);
+            gameObject.SetActive(false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //Debug.Log("Collison with: "+collision.gameObject.name);
         if (collision.collider.tag == "Wall")// || collision.collider.tag == "Bullet")
-            Destroy(gameObject);
+            gameObject.SetActive(false);
     }
 }

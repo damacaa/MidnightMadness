@@ -2,15 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyFactoryManager : MonoBehaviour
+public class ItemFactoryManager : MonoBehaviour
 {
-    public static EnemyFactoryManager instance;
-    public GameObject enemyPrefab;
+    public static ItemFactoryManager instance;
+    public GameObject[] powerUpsPrefabs;
     public float spawnWait;
     float nextSpawnTime;
     private bool working = true;
-
-    public Transform[] spawnPoints;
 
     private void Awake()
     {
@@ -32,16 +30,17 @@ public class EnemyFactoryManager : MonoBehaviour
     {
         if (working && Time.time > nextSpawnTime)
         {
-            SpawnEnemy();
+            SpawnPowerUp();
         }
     }
 
-    private void SpawnEnemy()
+    private void SpawnPowerUp()
     {
         nextSpawnTime = Time.time + spawnWait;
-        int spawnPoint = Random.Range(0, spawnPoints.Length);
 
-        GameObject.Instantiate(enemyPrefab, spawnPoints[spawnPoint].position, Quaternion.identity);
+        int powerUpId = Random.Range(0, powerUpsPrefabs.Length);
+
+        GameObject.Instantiate(powerUpsPrefabs[powerUpId], transform.position, Quaternion.identity);
     }
 
     internal void Restart()

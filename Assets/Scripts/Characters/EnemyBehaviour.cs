@@ -32,8 +32,11 @@ public class EnemyBehaviour : CharacterController
 
     private void Update()
     {
-        if (!target)
+        if (!target || GameManager.pause || !isAwake)
+        {
+            movementController.Move(0, 0);
             return;
+        }
 
         Vector2 dir = target.transform.position - transform.position;
         dir.Normalize();
