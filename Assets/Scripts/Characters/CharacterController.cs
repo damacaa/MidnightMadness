@@ -9,13 +9,28 @@ public class CharacterController : MonoBehaviour
     public bool isAwake = true;
     public float health = 10;
 
-    void Start()
+    protected Rigidbody2D rb;
+    public MovementController movementController;
+    public AttackController attackController;
+
+    protected void Awake()
     {
-        
+        movementController = GetComponent<MovementController>();
+        attackController = GetComponent<AttackController>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    public void Stun(float time)
+    public void Stun(float time, Vector2 dir = new Vector2())
     {
+        if (!isAwake)
+            return;
+
+        attackController.DropWeapon();
+
+        transform.up = -dir;
+
+        rb.AddForce(dir * 10f, ForceMode2D.Impulse);
+
         isAwake = false;
         StartCoroutine(RecoverAfter(time));
     }
@@ -27,7 +42,10 @@ public class CharacterController : MonoBehaviour
         yield return null;
     }
 
-    protected virtual void Die() {
+    protected virtual void Die()
+    {
         Debug.Log("Ouch");
     }
+
+
 }

@@ -8,7 +8,8 @@ public class ItemFactoryManager : MonoBehaviour
     public GameObject[] powerUpsPrefabs;
     public GameObject[] weaponPrefabs;
 
-    public float spawnWait;
+    public float powerUpSpawnWait;
+    public float weaponSpawnWait;
 
     float nextPowerUpSpawnTime;
     float nextWeaponSpawnTime;
@@ -28,7 +29,7 @@ public class ItemFactoryManager : MonoBehaviour
 
     private void Start()
     {
-        nextPowerUpSpawnTime = Time.time + (spawnWait * 1.5f);
+        nextPowerUpSpawnTime = Time.time + (powerUpSpawnWait * 1.5f);
         nextWeaponSpawnTime = Time.time;
     }
     private void Update()
@@ -40,7 +41,8 @@ public class ItemFactoryManager : MonoBehaviour
         {
             SpawnPowerUp();
         }
-        else if (Time.time > nextWeaponSpawnTime)
+        
+        if (Time.time > nextWeaponSpawnTime)
         {
             SpawnWeapon();
         }
@@ -48,7 +50,7 @@ public class ItemFactoryManager : MonoBehaviour
 
     private void SpawnPowerUp()
     {
-        nextPowerUpSpawnTime = Time.time + spawnWait;
+        nextPowerUpSpawnTime = Time.time + powerUpSpawnWait;
 
         int powerUpId = Random.Range(0, powerUpsPrefabs.Length);
 
@@ -57,7 +59,7 @@ public class ItemFactoryManager : MonoBehaviour
 
     private void SpawnWeapon()
     {
-        nextWeaponSpawnTime = Time.time + spawnWait;
+        nextWeaponSpawnTime = Time.time + weaponSpawnWait;
 
         int weaponpId = Random.Range(0, weaponPrefabs.Length);
 
@@ -86,6 +88,6 @@ public class ItemFactoryManager : MonoBehaviour
     public void Continue()
     {
         working = true;
-        nextPowerUpSpawnTime = Time.time + spawnWait;
+        nextPowerUpSpawnTime = Time.time + powerUpSpawnWait;
     }
 }

@@ -5,12 +5,14 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     Rigidbody2D rb;
+    CharacterController cc;
     public float speed = 10f;
     public bool canMove = true;
     // Start is called before the first frame update
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        cc = GetComponent<CharacterController>();
     }
 
     public void Move(float x, float y)

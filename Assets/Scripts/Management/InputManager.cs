@@ -36,13 +36,14 @@ public class InputManager : MonoBehaviour
         if (DialogManager.instance.selectedZone != null && Input.GetKeyDown(KeyCode.E) && !DialogManager.instance.dialogStarted)
         {
             DialogManager.instance.selectedZone.StartDialog();
+            UIManager.instance.HideInteract();
         }
         else if (Input.anyKeyDown && DialogManager.instance.dialogStarted)
         {
             DialogManager.instance.NextDialog();
         }
 
-        if (locked)
+        if (locked || !PlayerController.instance.isAwake)
         {
             return;
         }

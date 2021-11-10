@@ -6,22 +6,16 @@ using UnityEngine;
 public class EnemyBehaviour : CharacterController
 {
     CharacterController target;
-    MovementController movementController;
-    AttackController attackController;
+
     LayerMask playerMask;
     public float range = 10;
     public int score = 100;
 
-    private void Awake()
-    {
-        movementController = GetComponent<MovementController>();
-        attackController = GetComponent<AttackController>();
-        playerMask = LayerMask.GetMask("Player");
-    }
-
     private void Start()
     {
+        playerMask = LayerMask.GetMask("Player");
         target = PlayerController.instance;
+        range = attackController.Range;
     }
 
     public new void Die()
@@ -34,7 +28,6 @@ public class EnemyBehaviour : CharacterController
     {
         if (!target || GameManager.pause || !isAwake)
         {
-            movementController.Move(0, 0);
             return;
         }
 
@@ -43,8 +36,8 @@ public class EnemyBehaviour : CharacterController
         movementController.Move(dir.x, dir.y);
         transform.up = dir;
 
-        RaycastHit2D hit = Physics2D.Raycast(attackController.handPos.position, dir, range, playerMask);
-        Debug.DrawRay(attackController.handPos.position, dir * range);
+        RaycastHit2D hit = Physics2D.Raycast(attackController.handPos.position, dir, attackController.Range, playerMask);
+        Debug.DrawRay(attackController.handPos.position, dir * attackController.Range);
         if (hit.collider != null)
         {
             attackController.Attack();
