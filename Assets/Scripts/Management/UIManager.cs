@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
 
     public Image dialogBox;
     public Text dialogText;
+
+    public GameObject endMenu;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -24,11 +26,18 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        endMenu.SetActive(false);
     }
 
     internal void ShowEnd()
     {
-        throw new NotImplementedException();
+        endMenu.SetActive(true);
+    }
+
+    internal void HideEnd()
+    {
+        endMenu.SetActive(false);
     }
 
     void Start()

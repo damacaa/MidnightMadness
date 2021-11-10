@@ -26,6 +26,9 @@ public class PlayerController : CharacterController
 
     private void Update()
     {
+        if (GameManager.gameEnd || GameManager.pause || !isAwake)
+            return;
+
         // convert mouse position into world coordinates
         Vector2 mouseScreenPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         // get direction you want to point at
@@ -43,6 +46,9 @@ public class PlayerController : CharacterController
 
     private void Hurt()
     {
+        if (GameManager.pause)
+            return;
+
         if (injured)
         {
             Die();
@@ -53,8 +59,15 @@ public class PlayerController : CharacterController
         }
     }
 
+    public void Heal()
+    {
+        injured = false;
+    }
+
     public new void Die()
     {
-        GameManager.instance.RestartGame();
+        //GameManager.RestartGame();
+        movementController.Move(0,0);
+        GameManager.EndGame();
     }
 }

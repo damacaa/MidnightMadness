@@ -8,12 +8,12 @@ public class DialogManager : MonoBehaviour
 {
     public static DialogManager instance;
 
-    public static DialogZoneBehaviour selectedZone = null;
-    public static UnityEvent endEvent;
+    public DialogZoneBehaviour selectedZone = null;
+    public UnityEvent endEvent;
 
     
 
-    public static bool dialogStarted = false;
+    public bool dialogStarted = false;
 
     bool creatingDialog = false;
     bool dialogReady = false;
@@ -68,6 +68,7 @@ public class DialogManager : MonoBehaviour
         currentDialog = dialog;
 
         dialogStarted = true;
+        GameManager.PauseGame();
 
         UIManager.instance.ShowDialog();
 
@@ -130,6 +131,7 @@ public class DialogManager : MonoBehaviour
             CameraFollowCharacter.instance.BackToNormal();
             InputManager.instance.locked = false;
             EnemyFactoryManager.instance.Continue();
+            GameManager.ResumeGame();
 
             if (endEvent != null)
             {

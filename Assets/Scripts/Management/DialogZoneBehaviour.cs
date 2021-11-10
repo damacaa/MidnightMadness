@@ -25,14 +25,14 @@ public class DialogZoneBehaviour : MonoBehaviour
         }
         DialogManager.instance.StartDialog();
 
-        DialogManager.endEvent = endEvent;
+        DialogManager.instance.endEvent = endEvent;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
-            DialogManager.selectedZone = this;
+            DialogManager.instance.selectedZone = this;
             if (isOptional)
             {
                 UIManager.instance.ShowInteract();
@@ -51,7 +51,7 @@ public class DialogZoneBehaviour : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            DialogManager.selectedZone = null;
+            DialogManager.instance.selectedZone = null;
             UIManager.instance.HideInteract();
         }
     }

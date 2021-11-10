@@ -26,16 +26,16 @@ public class InputManager : MonoBehaviour
     {
         if (GameManager.gameEnd && Input.anyKeyDown)
         {
-            GameManager.instance.RestartGame();
+            GameManager.RestartGame();
             return;
         }
 
 
-        if (DialogManager.selectedZone != null && Input.GetKeyDown(KeyCode.E) && !DialogManager.dialogStarted)
+        if (DialogManager.instance.selectedZone != null && Input.GetKeyDown(KeyCode.E) && !DialogManager.instance.dialogStarted)
         {
-            DialogManager.selectedZone.StartDialog();
+            DialogManager.instance.selectedZone.StartDialog();
         }
-        else if (Input.anyKeyDown && DialogManager.dialogStarted)
+        else if (Input.anyKeyDown && DialogManager.instance.dialogStarted)
         {
             DialogManager.instance.NextDialog();
         }

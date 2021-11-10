@@ -72,6 +72,8 @@ public class AttackController : MonoBehaviour
         weapon.rigidBody.velocity = Vector2.zero;
         weapon.rigidBody.AddForce(transform.up * 100);
         weapon.rigidBody.AddTorque(-3f);
+        weapon.StopAllCoroutines();
+        weapon.reloading = false;
         weapon = null;
     }
 
