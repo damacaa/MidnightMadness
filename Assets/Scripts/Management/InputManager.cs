@@ -8,6 +8,8 @@ public class InputManager : MonoBehaviour
 
     public bool locked = false;
 
+    public bool controller = false;
+
 
     private void Awake()
     {
@@ -49,25 +51,53 @@ public class InputManager : MonoBehaviour
         float y = Input.GetAxis("Vertical");
         PlayerController.instance.movementController.Move(x, y);
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetButton("Fire1"))
         {
             PlayerController.instance.attackController.Attack();
         }
-        else if (Input.GetMouseButtonUp(0))
+        else if (Input.GetButtonUp("Fire1"))
         {
             PlayerController.instance.attackController.Release();
         }
 
-        if (Input.GetMouseButton(1))
+        if (Input.GetButtonDown("Fire2"))
         {
             PlayerController.instance.attackController.DropWeapon();
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetButtonDown("Reload"))
         {
             PlayerController.instance.attackController.Reload();
         }
 
 
+        if (controller)
+        {
+            PlayerLookAtJoystick();
+            return;
+        }
+
+        PlayerLookAtMouse();
+
+    }
+
+    void PlayerLookAtMouse()
+    {
+        // convert mouse position into world coordinates
+        Vector2 mouseScreenPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // get direction you want to point at
+        Vector2 direction = (mouseScreenPosition - (Vector2)PlayerController.instance.transform.position).normalized;
+        // set vector of transform directly
+        PlayerController.instance.transform.up = direction;
+    }
+
+    void PlayerLookAtJoystick()
+    {
+        float x = Input.GetAxis("Mouse X");
+        float y = Input.GetAxis("Mouse Y");
+
+        Debug.Log(x + ":" + y);
+
+        PlayerController.instance.transform.up = new Vector2(x, y);
     }
 }

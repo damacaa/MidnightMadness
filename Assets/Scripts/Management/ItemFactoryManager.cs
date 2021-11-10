@@ -6,8 +6,12 @@ public class ItemFactoryManager : MonoBehaviour
 {
     public static ItemFactoryManager instance;
     public GameObject[] powerUpsPrefabs;
+    public GameObject[] weaponPrefabs;
+
     public float spawnWait;
-    float nextSpawnTime;
+
+    float nextPowerUpSpawnTime;
+    float nextWeaponSpawnTime;
     private bool working = true;
 
     private void Awake()
@@ -24,23 +28,49 @@ public class ItemFactoryManager : MonoBehaviour
 
     private void Start()
     {
-        nextSpawnTime = Time.time + spawnWait;
+        nextPowerUpSpawnTime = Time.time + (spawnWait * 1.5f);
+        nextWeaponSpawnTime = Time.time;
     }
     private void Update()
     {
-        if (working && Time.time > nextSpawnTime)
+        if (!working)
+            return;
+
+        if (Time.time > nextPowerUpSpawnTime)
         {
             SpawnPowerUp();
+        }
+        else if (Time.time > nextWeaponSpawnTime)
+        {
+            SpawnWeapon();
         }
     }
 
     private void SpawnPowerUp()
     {
-        nextSpawnTime = Time.time + spawnWait;
+        nextPowerUpSpawnTime = Time.time + spawnWait;
 
         int powerUpId = Random.Range(0, powerUpsPrefabs.Length);
 
-        GameObject.Instantiate(powerUpsPrefabs[powerUpId], transform.position, Quaternion.identity);
+        GameObject.Instantiate(powerUpsPrefabs[powerUpId], GetRandomPos(), Quaternion.identity);
+    }
+
+    private void SpawnWeapon()
+    {
+        nextWeaponSpawnTime = Time.time + spawnWait;
+
+        int weaponpId = Random.Range(0, weaponPrefabs.Length);
+
+        GameObject.Instantiate(weaponPrefabs[weaponpId], GetRandomPos(), Quaternion.identity);
+    }
+
+    float size = 5;
+    Vector2 GetRandomPos()
+    {
+        float x = Random.Range(-size,size);
+        float y = Random.Range(-size,size);
+
+        return new Vector2(x,y);
     }
 
     internal void Restart()
@@ -56,6 +86,6 @@ public class ItemFactoryManager : MonoBehaviour
     public void Continue()
     {
         working = true;
-        nextSpawnTime = Time.time + spawnWait;
+        nextPowerUpSpawnTime = Time.time + spawnWait;
     }
 }
