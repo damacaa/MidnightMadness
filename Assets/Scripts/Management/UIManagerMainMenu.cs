@@ -24,4 +24,9 @@ public class UIManagerMainMenu : MonoBehaviour
         GameManager.StartGame();
     }
 
+    public void ExitGame()
+    {
+        GameManager.ExitGame();
+    }
+
 }

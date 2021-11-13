@@ -77,4 +77,9 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
+    public static void ExitGame()
+    {
+        Application.Quit();
+    }
+
 }
