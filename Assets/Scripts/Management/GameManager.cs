@@ -72,4 +72,9 @@ public class GameManager : MonoBehaviour
         pause = false;
         Time.timeScale = 1;
     }
+
+    public static void StartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+    }
 }
