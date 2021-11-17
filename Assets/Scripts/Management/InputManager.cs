@@ -50,7 +50,15 @@ public class InputManager : MonoBehaviour
 
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
-        PlayerController.instance.movementController.Move(x, y);
+        PlayerController.instance.Move(x, y);
+
+        if (PlayerController.instance.vehicle)
+        {
+            if (Input.GetKeyDown(KeyCode.E)) {
+                PlayerController.instance.ExitCar();
+            }
+            return;
+        }
 
         if (Input.GetButton("Fire1"))
         {
@@ -71,6 +79,8 @@ public class InputManager : MonoBehaviour
             PlayerController.instance.attackController.Reload();
         }
 
+
+        
 
         if (controller)
         {
