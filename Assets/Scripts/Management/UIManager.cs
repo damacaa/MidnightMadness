@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject pauseButton;
 
+    public GameObject optionsMenu;
+
     public GameObject endMenu;
     // Start is called before the first frame update
     private void Awake()
@@ -56,6 +58,7 @@ public class UIManager : MonoBehaviour
     {
         scoreText.text = Mathf.RoundToInt(ScoreManager.instance.score).ToString();
         ammoText.text = PlayerController.instance.attackController.GetAmmoString();
+
     }
 
     public void ShowInteract()
@@ -94,6 +97,24 @@ public class UIManager : MonoBehaviour
         GameManager.PauseGame();
     }
 
-    
+    public void ExitGame()
+    {
+        GameManager.GoToMenu();
+    }
+
+
+    public void HideOptions()
+    {
+        optionsMenu.SetActive(false);
+        pauseMenu.SetActive(true);
+
+    }
+
+    public void ShowOptions()
+    {
+        optionsMenu.SetActive(true);
+        pauseMenu.SetActive(false);
+    }
+
 
 }
