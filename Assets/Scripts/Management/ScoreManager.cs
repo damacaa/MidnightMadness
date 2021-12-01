@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,10 +23,17 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int s)
     {
         score += s * multiplier;
+        multiplier += s/100f;
     }
 
     private void ResetMultiplier()
     {
         multiplier = 1;
+    }
+
+    internal void Restart()
+    {
+        ResetMultiplier();
+        score = 0;
     }
 }
