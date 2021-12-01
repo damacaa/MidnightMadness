@@ -41,7 +41,16 @@ public class PlayerController : CharacterController
         if (collision.collider.tag == "Vehicle")
         {
             VehicleController v = collision.collider.GetComponent<VehicleController>();
-            GetInCar(v);
+            VehicleController.selectedVehicle = v;
+        }
+
+
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Vehicle")
+        {
+            VehicleController.selectedVehicle = null;
         }
     }
 
@@ -72,7 +81,8 @@ public class PlayerController : CharacterController
         GameManager.EndGame();
     }
 
-    public void GetInCar(VehicleController v) {
+    public void GetInCar(VehicleController v)
+    {
         Transform driverSeat;
         if (v.SetDriver(out driverSeat))
         {
@@ -85,7 +95,8 @@ public class PlayerController : CharacterController
             transform.rotation = driverSeat.rotation;
         }
     }
-    public void ExitCar() {
+    public void ExitCar()
+    {
         transform.parent = null;
         vehicle = null;
         rb.isKinematic = false;
