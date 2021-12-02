@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
 
     public static void GoToMenu()
     {
-
+        SceneManager.LoadScene(0);
     }
 
     public static void PauseGame()
