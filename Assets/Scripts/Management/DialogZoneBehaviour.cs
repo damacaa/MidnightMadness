@@ -8,7 +8,6 @@ using UnityEngine.Events;
 public class DialogZoneBehaviour : MonoBehaviour
 {
     public Dialog[] dialogs;
-    public UnityEvent endEvent;
     public bool isOptional = true;
     public bool destroyAfter = false;
 
@@ -24,8 +23,6 @@ public class DialogZoneBehaviour : MonoBehaviour
             DialogManager.instance.AddDialog(dialogs[i]);
         }
         DialogManager.instance.StartDialog();
-
-        DialogManager.instance.endEvent = endEvent;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -39,8 +36,8 @@ public class DialogZoneBehaviour : MonoBehaviour
             }
             else
             {
-                if(destroyAfter)
-                    endEvent.AddListener(DisableZone);
+                if (destroyAfter)
+                    dialogs[dialogs.Length - 1].endEvent.AddListener(DisableZone);
                 StartDialog();
             }
 

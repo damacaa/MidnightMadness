@@ -26,7 +26,15 @@ public class CameraFollowCharacter : MonoBehaviour
     {
         if (normalFollow)
         {
-            Vector3 pos = PlayerController.instance.transform.position;
+            Vector3 pos;
+            if (PlayerController.instance.vehicle)
+            {
+                pos = PlayerController.instance.vehicle.gameObject.transform.position;
+            }
+            else
+            {
+                pos = PlayerController.instance.transform.position;
+            }
             pos.z = transform.position.z;
             transform.position = pos;
         }
@@ -61,7 +69,7 @@ public class CameraFollowCharacter : MonoBehaviour
         Vector3 pos;
         while (delta < time)
         {
-            pos =  Vector3.Lerp(originalPos, targetPos, delta / time);
+            pos = Vector3.Lerp(originalPos, targetPos, delta / time);
             pos.z = transform.position.z;
             transform.position = pos;
             delta += Time.deltaTime;
@@ -77,7 +85,7 @@ public class CameraFollowCharacter : MonoBehaviour
         Vector3 pos;
         while (delta < time)
         {
-            pos =  Vector3.Lerp(originalPos, PlayerController.instance.transform.position, delta / time);
+            pos = Vector3.Lerp(originalPos, PlayerController.instance.transform.position, delta / time);
             pos.z = transform.position.z;
             transform.position = pos;
             delta += Time.deltaTime;

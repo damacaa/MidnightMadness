@@ -32,16 +32,26 @@ public class InputManager : MonoBehaviour
             return;
         }
 
-
+        //Dialog interaction
         if (DialogManager.instance.selectedZone != null && Input.GetKeyDown(KeyCode.E) && !DialogManager.instance.dialogStarted)
         {
             DialogManager.instance.selectedZone.StartDialog();
             UIManager.instance.HideInteract();
+            return;
         }
-        else if (Input.anyKeyDown && DialogManager.instance.dialogStarted)
+        else if (DialogManager.instance.dialogStarted && Input.anyKeyDown)
         {
             DialogManager.instance.NextDialog();
+            return;
         }
+
+        if (VehicleController.selectedVehicle != null && Input.GetKeyDown(KeyCode.E))
+        {
+            PlayerController.instance.GetInCar(VehicleController.selectedVehicle);
+            return;
+        }
+
+
 
         if (locked || !PlayerController.instance.isAwake)
         {
@@ -50,7 +60,16 @@ public class InputManager : MonoBehaviour
 
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
-        PlayerController.instance.movementController.Move(x, y);
+        PlayerController.instance.Move(x, y);
+
+        if (PlayerController.instance.vehicle)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                PlayerController.instance.ExitCar();
+            }
+            return;
+        }
 
         if (Input.GetButton("Fire1"))
         {
@@ -70,6 +89,8 @@ public class InputManager : MonoBehaviour
         {
             PlayerController.instance.attackController.Reload();
         }
+
+
 
 
         if (controller)
