@@ -12,6 +12,7 @@ public class CharacterController : MonoBehaviour
     protected Rigidbody2D rb;
     public MovementController movementController;
     public AttackController attackController;
+    public VehicleController vehicle;
 
     protected void Awake()
     {
@@ -45,6 +46,14 @@ public class CharacterController : MonoBehaviour
     protected virtual void Die()
     {
         Debug.Log("Ouch");
+    }
+
+    public void Move(float x, float y)
+    {
+        if (vehicle)
+            vehicle.Move(x, y);
+        else
+            movementController.Move(x, y);
     }
 
 

@@ -9,9 +9,7 @@ public class DialogManager : MonoBehaviour
     public static DialogManager instance;
 
     public DialogZoneBehaviour selectedZone = null;
-    public UnityEvent endEvent;
-
-    
+ 
 
     public bool dialogStarted = false;
 
@@ -92,6 +90,11 @@ public class DialogManager : MonoBehaviour
             yield return new WaitForSeconds(wait);
         }
 
+        if (currentDialog.endEvent != null)
+        {
+            currentDialog.endEvent.Invoke();
+        }
+
         creatingDialog = false;
         dialogReady = true;
         yield return null;
@@ -103,6 +106,11 @@ public class DialogManager : MonoBehaviour
         {
             StopCoroutine(dialogCoroutine);
             UIManager.instance.dialogText.text = currentDialog.text;
+
+            if (currentDialog.endEvent != null)
+            {
+                currentDialog.endEvent.Invoke();
+            }
 
             creatingDialog = false;
             dialogReady = true;
@@ -133,11 +141,7 @@ public class DialogManager : MonoBehaviour
             EnemyFactoryManager.instance.Continue();
             GameManager.pause = false;
 
-            if (endEvent != null)
-            {
-                endEvent.Invoke();
-                endEvent = null;
-            }
+
         }
     }
 }
@@ -147,6 +151,7 @@ public class Dialog
 {
     public string text = "";
     public Transform target = null;
+    public UnityEvent endEvent;
 
     public Dialog(string text, Transform target)
     {
