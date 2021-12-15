@@ -9,6 +9,8 @@ public class VehicleController : MonoBehaviour
     public float speed = 10f;
     public float handling = 1f;
     public float drifFactor = 0.95f;
+    public Color paintColor;
+    public SpriteRenderer[] colorChangingParts;
     public float Speed
     {
         get
@@ -30,6 +32,11 @@ public class VehicleController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         passengers = new CharacterController[seats.Length];
+
+        foreach (SpriteRenderer s in colorChangingParts)
+        {
+            s.color = paintColor;
+        }
     }
 
     public void Move(float x, float y)
@@ -84,4 +91,14 @@ public class VehicleController : MonoBehaviour
             enemy.Stun(5, dir.normalized * Speed);
         }
     }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        foreach (SpriteRenderer s in colorChangingParts)
+        {
+            s.color = paintColor;
+        }
+    }
+#endif
 }
