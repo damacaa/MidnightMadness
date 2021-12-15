@@ -43,6 +43,11 @@ public class CharacterController : MonoBehaviour
         yield return null;
     }
 
+    public void Hurt()
+    {
+        Die();
+    }
+
     protected virtual void Die()
     {
         Debug.Log("Ouch");
@@ -55,6 +60,4 @@ public class CharacterController : MonoBehaviour
         else
             movementController.Move(x, y);
     }
-
-
 }

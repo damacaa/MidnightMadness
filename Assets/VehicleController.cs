@@ -9,18 +9,27 @@ public class VehicleController : MonoBehaviour
     public float speed = 10f;
     public float handling = 1f;
     public float drifFactor = 0.95f;
+    public float Speed
+    {
+        get
+        {
+            return rb.velocity.magnitude;
+        }
+    }
 
     float angle = 0f;
 
     Rigidbody2D rb;
 
     public Transform[] seats;
+    CharacterController[] passengers;
+
     int ocupantCount = 0;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.isKinematic = true;
+        passengers = new CharacterController[seats.Length];
     }
 
     public void Move(float x, float y)
@@ -36,26 +45,43 @@ public class VehicleController : MonoBehaviour
         Vector2 rightVelocity = transform.right * Vector2.Dot(rb.velocity, transform.right);
 
         rb.velocity = forwardVelocity + (drifFactor * rightVelocity);
-
-        //rb.AddTorque(handling * -x * rb.velocity.magnitude * Vector3.Dot(transform.up, rb.velocity));
     }
 
-    public bool SetDriver(out Transform transform)
+    public bool GetIn(CharacterController character, out Transform transform)
     {
-        if (ocupantCount > 0)
+        for (int i = 0; i < passengers.Length; i++)
         {
-            transform = null;
-            return false;
+            if (!passengers[i])
+            {
+                passengers[i] = character;
+                transform = seats[i];
+                return true;
+            }
         }
 
-        rb.isKinematic = false;
-        transform = seats[0];
-        ocupantCount++;
-        return true;
+        transform = null;
+        return false;
     }
 
+    public void GetOut(CharacterController character)
+    {
+        for (int i = 0; i < passengers.Length; i++)
+        {
+            if (passengers[i] == character)
+            {
+                passengers[i] = null;
+                return;
+            }
+        }
+    }
+
+    float minVehicleSpeed = 0.1f;
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
+        if (collision.gameObject.TryGetComponent<EnemyBehaviour>(out EnemyBehaviour enemy) && Speed > minVehicleSpeed)
+        {
+            Vector3 dir = enemy.transform.position - transform.position;
+            enemy.Stun(5, dir.normalized * Speed);
+        }
     }
 }

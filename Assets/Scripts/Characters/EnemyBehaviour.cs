@@ -44,11 +44,4 @@ public class EnemyBehaviour : CharacterController
             attackController.Release();
         }
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //Debug.Log("Collison with: "+collision.gameObject.name);
-        if (collision.collider.tag == "Bullet")
-            Die();
-    }
 }
