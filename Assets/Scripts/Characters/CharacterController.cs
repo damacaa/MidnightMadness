@@ -43,6 +43,11 @@ public class CharacterController : MonoBehaviour
         yield return null;
     }
 
+    public void Hurt()
+    {
+        Die();
+    }
+
     protected virtual void Die()
     {
         Debug.Log("Ouch");
@@ -56,5 +61,11 @@ public class CharacterController : MonoBehaviour
             movementController.Move(x, y);
     }
 
-
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Wall" && !isAwake)
+        {
+            rb.velocity = -rb.velocity;
+        }
+    }
 }
