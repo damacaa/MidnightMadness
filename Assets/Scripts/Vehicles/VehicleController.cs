@@ -41,6 +41,9 @@ public class VehicleController : MonoBehaviour
 
     public void Move(float x, float y)
     {
+        if (y < 0 && Vector2.Dot(rb.velocity, transform.up) > 0)
+            return;
+
         rb.AddForce(transform.up * speed * y, ForceMode2D.Force);
 
         float turnFactor = Mathf.Clamp01(rb.velocity.magnitude / 8);
@@ -88,7 +91,7 @@ public class VehicleController : MonoBehaviour
         if (collision.gameObject.TryGetComponent<EnemyBehaviour>(out EnemyBehaviour enemy) && Speed > minVehicleSpeed)
         {
             Vector3 dir = enemy.transform.position - transform.position;
-            enemy.Stun(5, dir.normalized * Speed);
+            enemy.Stun(5, dir.normalized * Speed * 0.5f);
         }
     }
 
