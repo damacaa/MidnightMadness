@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class VehicleController : MonoBehaviour
 {
     public static VehicleController selectedVehicle = null;
@@ -11,6 +12,9 @@ public class VehicleController : MonoBehaviour
     public float drifFactor = 0.95f;
     public Color paintColor;
     public SpriteRenderer[] colorChangingParts;
+    public GameObject[] ligths;
+    bool turnedOn = false;
+    ///public Light2D light2D;
     public float Speed
     {
         get
@@ -41,7 +45,7 @@ public class VehicleController : MonoBehaviour
 
     public void Move(float x, float y)
     {
-        if (y < 0 && Vector2.Dot(rb.velocity, transform.up) > 0)
+        if (y < 0 && Vector2.Dot(rb.velocity, transform.up) > 0.1f)
             return;
 
         rb.AddForce(transform.up * speed * y, ForceMode2D.Force);
@@ -65,6 +69,8 @@ public class VehicleController : MonoBehaviour
             {
                 passengers[i] = character;
                 transform = seats[i];
+                if (i == 0)
+                    TurnOn();
                 return true;
             }
         }
@@ -80,6 +86,8 @@ public class VehicleController : MonoBehaviour
             if (passengers[i] == character)
             {
                 passengers[i] = null;
+                if (i == 0)
+                    TurnOff();
                 return;
             }
         }
@@ -94,6 +102,24 @@ public class VehicleController : MonoBehaviour
             enemy.Stun(5, dir.normalized * Speed * 0.5f);
         }
     }
+
+    private void TurnOn()
+    {
+        turnedOn = true;
+        foreach (GameObject light in ligths)
+        {
+            light.SetActive(true);
+        }
+    }
+    private void TurnOff()
+    {
+        turnedOn = false;
+        foreach (GameObject light in ligths)
+        {
+            light.SetActive(false);
+        }
+    }
+    public void Explode() { }
 
 #if UNITY_EDITOR
     private void OnValidate()
