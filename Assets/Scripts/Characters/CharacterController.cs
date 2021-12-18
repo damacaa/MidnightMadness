@@ -45,12 +45,13 @@ public class CharacterController : MonoBehaviour
 
     public void Hurt()
     {
+        Debug.Log("Ouch");
         Die();
     }
 
     protected virtual void Die()
     {
-        Debug.Log("Ouch");
+        Debug.Log("Death");
     }
 
     public void Move(float x, float y)
@@ -63,9 +64,14 @@ public class CharacterController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Wall" && !isAwake)
+        if (collision.gameObject.tag == "Wall" && !isAwake)
         {
             rb.velocity = -rb.velocity;
         }
+    }
+
+    public void LookAtPlayer()
+    {
+        transform.up = PlayerController.instance.transform.position - transform.position;
     }
 }

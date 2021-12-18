@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -14,6 +12,8 @@ public class VehicleController : MonoBehaviour
     public SpriteRenderer[] colorChangingParts;
     public GameObject[] ligths;
     bool turnedOn = false;
+
+
     ///public Light2D light2D;
     public float Speed
     {
@@ -30,7 +30,7 @@ public class VehicleController : MonoBehaviour
     public Transform[] seats;
     CharacterController[] passengers;
 
-    int ocupantCount = 0;
+    public GameObject tireMarkPrefab;
 
     private void Awake()
     {
@@ -43,6 +43,8 @@ public class VehicleController : MonoBehaviour
         }
     }
 
+    GameObject tireMarkLeft;
+    GameObject tireMarkRight;
     public void Move(float x, float y)
     {
         if (y < 0 && Vector2.Dot(rb.velocity, transform.up) > 0.1f)
@@ -55,8 +57,38 @@ public class VehicleController : MonoBehaviour
         angle += handling * -x * turnFactor * Mathf.Sign(Vector2.Dot(rb.velocity, transform.up));
         rb.MoveRotation(angle);
 
+        float drift = Vector2.Dot(rb.velocity, transform.right);
         Vector2 forwardVelocity = transform.up * Vector2.Dot(rb.velocity, transform.up);
-        Vector2 rightVelocity = transform.right * Vector2.Dot(rb.velocity, transform.right);
+        Vector2 rightVelocity = transform.right * drift;
+
+        //Debug.Log(Mathf.Abs(drift));
+        if (Mathf.Abs(drift) >= .9f)
+        {
+            if (!tireMarkLeft)
+            {
+                tireMarkLeft = GameObject.Instantiate(tireMarkPrefab, transform);
+                tireMarkLeft.transform.localPosition = new Vector2(-0.86f, -2.15f);
+            }
+            if (!tireMarkRight)
+            {
+                tireMarkRight = GameObject.Instantiate(tireMarkPrefab, transform);
+                tireMarkRight.transform.localPosition = new Vector2(0.86f, -2.15f);
+            }
+        }
+        else
+        {
+            if (tireMarkLeft)
+            {
+                tireMarkLeft.transform.parent = null;
+                tireMarkLeft = null;
+            }
+
+            if (tireMarkRight)
+            {
+                tireMarkRight.transform.parent = null;
+                tireMarkRight = null;
+            }
+        }
 
         rb.velocity = forwardVelocity + (drifFactor * rightVelocity);
     }
@@ -69,7 +101,7 @@ public class VehicleController : MonoBehaviour
             {
                 passengers[i] = character;
                 transform = seats[i];
-                if (i == 0)
+                if (!turnedOn && i == 0)
                     TurnOn();
                 return true;
             }
@@ -86,7 +118,7 @@ public class VehicleController : MonoBehaviour
             if (passengers[i] == character)
             {
                 passengers[i] = null;
-                if (i == 0)
+                if (turnedOn && i == 0)
                     TurnOff();
                 return;
             }
@@ -99,7 +131,8 @@ public class VehicleController : MonoBehaviour
         if (collision.gameObject.TryGetComponent<EnemyBehaviour>(out EnemyBehaviour enemy) && Speed > minVehicleSpeed)
         {
             Vector3 dir = enemy.transform.position - transform.position;
-            enemy.Stun(5, dir.normalized * Speed * 0.5f);
+            //enemy.Stun(5, dir.normalized * Speed * 0.5f);
+            enemy.Hurt();
         }
     }
 
