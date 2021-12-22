@@ -52,6 +52,7 @@ public class CharacterController : MonoBehaviour
     protected virtual void Die()
     {
         Debug.Log("Death");
+        attackController.DropWeapon();
     }
 
     public void Move(float x, float y)
@@ -60,14 +61,6 @@ public class CharacterController : MonoBehaviour
             vehicle.Move(x, y);
         else
             movementController.Move(x, y);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Wall" && !isAwake)
-        {
-            rb.velocity = -rb.velocity;
-        }
     }
 
     public void LookAtPlayer()

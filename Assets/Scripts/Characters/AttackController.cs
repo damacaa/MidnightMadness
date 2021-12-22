@@ -61,7 +61,7 @@ public class AttackController : MonoBehaviour
     public string GetAmmoString()
     {
         if (weapon != null)
-            return weapon.ammoInMag.ToString() + "/" + weapon.ammo.ToString();
+            return weapon.currentAmmo.ToString() + "/" + weapon.ammo.ToString();
         return "-/-";
     }
 
@@ -75,6 +75,25 @@ public class AttackController : MonoBehaviour
         weapon.transform.position = handPos.position;
         weapon.transform.rotation = handPos.rotation;
         weapon.transform.parent = handPos;
+
+        if (weapon.currentAmmo == 0)
+            weapon.Reload();
+    }
+
+    public void ThrowWeapon()
+    {
+        if (weapon == null)
+            return;
+        weapon.transform.parent = null;
+        weapon.rigidBody.isKinematic = false;
+        weapon.GetComponent<Collider2D>().enabled = true;
+        //weapon.rigidBody.velocity = Vector2.zero;
+        weapon.rigidBody.AddForce(transform.up * 300);
+        weapon.rigidBody.AddTorque(-1f);
+        weapon.StopAllCoroutines();
+        weapon.reloading = false;
+        weapon.flying = true;
+        weapon = null;
     }
 
     public void DropWeapon()
@@ -85,11 +104,11 @@ public class AttackController : MonoBehaviour
         weapon.rigidBody.isKinematic = false;
         weapon.GetComponent<Collider2D>().enabled = true;
         //weapon.rigidBody.velocity = Vector2.zero;
-        weapon.rigidBody.AddForce(transform.up * 300);
-        weapon.rigidBody.AddTorque(-3f);
+        //weapon.rigidBody.AddForce(transform.up * 300);
+        //weapon.rigidBody.AddTorque(-3f);
         weapon.StopAllCoroutines();
         weapon.reloading = false;
-        weapon.flying = true;
+        //weapon.flying = true;
         weapon = null;
     }
 
@@ -130,7 +149,7 @@ public class AttackController : MonoBehaviour
             }
             else
             {
-                if (weapon == null)
+                if (weapon == null && GetComponent<CharacterController>().isAwake)
                     PickupWeapon(collision.collider.GetComponent<WeaponController>());
             }
         }

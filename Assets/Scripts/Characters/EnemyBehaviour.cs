@@ -21,6 +21,7 @@ public class EnemyBehaviour : CharacterController
     protected override void Die()
     {
         ScoreManager.instance.AddScore(score);
+        attackController.DropWeapon();
         Destroy(gameObject);
     }
 
