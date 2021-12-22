@@ -18,9 +18,10 @@ public class EnemyBehaviour : CharacterController
         range = attackController.Range;
     }
 
-    public new void Die()
+    protected override void Die()
     {
         ScoreManager.instance.AddScore(score);
+        attackController.DropWeapon();
         Destroy(gameObject);
     }
 

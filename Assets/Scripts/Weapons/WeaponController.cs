@@ -20,7 +20,7 @@ public class WeaponController : MonoBehaviour
     public int bulletVelocity = 10;
     public float range = 3;
 
-    internal int ammoInMag;
+    internal int currentAmmo;
     public int magSize = 10;
     public int ammo = 30;
     public float reloadTime;
@@ -29,16 +29,24 @@ public class WeaponController : MonoBehaviour
     internal bool flying = false;
 
     public Transform exitPoint;
+    public GameObject flash;
 
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
+        flash.SetActive(false);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        ammoInMag = magSize;
+        currentAmmo = magSize;
+    }
+
+    private void FixedUpdate()
+    {
+        if (flash.activeSelf)
+            flash.SetActive(false);
     }
 
     // Update is called once per frame
@@ -49,6 +57,10 @@ public class WeaponController : MonoBehaviour
         {
             flying = false;
         }
+        else if (!flying && rigidBody.velocity.magnitude == 0 && rigidBody.angularVelocity == 0)
+        {
+            //rigidBody.isKinematic = true;
+        }
     }
 
     float nextShootTime = 0;
@@ -56,7 +68,7 @@ public class WeaponController : MonoBehaviour
 
     internal void Shoot()
     {
-        if (reloading || ammoInMag <= 0)
+        if (reloading || currentAmmo <= 0)
             return;
 
         if (Time.time > nextShootTime)
@@ -78,14 +90,15 @@ public class WeaponController : MonoBehaviour
 
     private void ShootBullet()
     {
+        flash.SetActive(true);
         Vector3 dir = exitPoint.position - transform.position;
         dir.Normalize();
         BulletBehaviour bullet = BulletPool.instance.GetABullet(bulletType).GetComponent<BulletBehaviour>();
         bullet.transform.position = exitPoint.position;
         bullet.transform.rotation = exitPoint.rotation;
         bullet.Shoot(transform.up, bulletVelocity);
-        ammoInMag--;
-        if (ammoInMag <= 0)
+        currentAmmo--;
+        if (currentAmmo <= 0)
         {
             Reload();
         }
@@ -98,9 +111,9 @@ public class WeaponController : MonoBehaviour
 
     public void Reload()
     {
-        if (!reloading && ammoInMag < magSize && ammo > 0)
+        if (!reloading && currentAmmo < magSize && ammo > 0)
         {
-            int ammoRequired = magSize - ammoInMag;//Check if player has enough ammo
+            int ammoRequired = magSize - currentAmmo;//Check if player has enough ammo
 
             if (ammoRequired <= ammo)
             {
@@ -117,8 +130,11 @@ public class WeaponController : MonoBehaviour
 
     IEnumerator WaitReload(float time, int newAmmo)
     {
+        if (currentAmmo == 0)
+            time *= 1.2f;
+
         yield return new WaitForSeconds(time);
-        ammoInMag += newAmmo;
+        currentAmmo += newAmmo;
         ammo -= newAmmo;
         reloading = false;
         yield return null;
