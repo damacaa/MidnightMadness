@@ -23,5 +23,7 @@ public class BulletBehaviour : MonoBehaviour
         //Debug.Log("Collison with: "+collision.gameObject.name);
         if (collision.collider.tag == "Wall")// || collision.collider.tag == "Bullet")
             gameObject.SetActive(false);
+        else if (collision.gameObject.TryGetComponent<CharacterController>(out CharacterController character))
+            character.Hurt();
     }
 }

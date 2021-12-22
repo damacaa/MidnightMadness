@@ -34,27 +34,21 @@ public class PlayerController : CharacterController
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //Debug.Log("Collison with: "+collision.gameObject.name);
-        if (collision.collider.tag == "Bullet")
-            Hurt();
-
-        if (collision.collider.tag == "Vehicle")
+        if (collision.gameObject.TryGetComponent<VehicleController>(out VehicleController v))
         {
-            VehicleController v = collision.collider.GetComponent<VehicleController>();
             VehicleController.selectedVehicle = v;
         }
-
-
     }
+
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Vehicle")
+        if (collision.gameObject.TryGetComponent<VehicleController>(out VehicleController v) && v == VehicleController.selectedVehicle)
         {
             VehicleController.selectedVehicle = null;
         }
     }
 
-    private void Hurt()
+    public new void Hurt()
     {
         if (GameManager.pause)
             return;
@@ -84,9 +78,8 @@ public class PlayerController : CharacterController
     public void GetInCar(VehicleController v)
     {
         Transform driverSeat;
-        if (v.SetDriver(out driverSeat))
+        if (v.GetIn(this, out driverSeat))
         {
-            Debug.Log("Vehicle");
             transform.parent = driverSeat;
             vehicle = v;
             rb.isKinematic = true;
@@ -95,12 +88,13 @@ public class PlayerController : CharacterController
             transform.rotation = driverSeat.rotation;
         }
     }
+
     public void ExitCar()
     {
-        transform.parent = null;
+        vehicle.GetOut(this);
         vehicle = null;
+        transform.parent = null;
         rb.isKinematic = false;
         GetComponent<Collider2D>().enabled = true;
-        //transform.position = driverSeat.position;
     }
 }
