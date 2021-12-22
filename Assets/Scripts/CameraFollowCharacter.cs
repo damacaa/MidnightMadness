@@ -62,7 +62,7 @@ public class CameraFollowCharacter : MonoBehaviour
         currentCoroutine = StartCoroutine(GoBackToPlayer());
     }
 
-    IEnumerator GoTo(Vector3 targetPos, float time = .25f)
+    IEnumerator GoTo(Vector3 targetPos, float time = .5f)
     {
         Vector3 originalPos = transform.position;
         float delta = 0;
@@ -75,7 +75,6 @@ public class CameraFollowCharacter : MonoBehaviour
             delta += Time.deltaTime;
             yield return null;
         }
-        currentCoroutine = null;
         yield return null;
     }
 
@@ -92,7 +91,6 @@ public class CameraFollowCharacter : MonoBehaviour
             delta += Time.deltaTime;
             yield return null;
         }
-        currentCoroutine = null;
         yield return null;
     }
 }

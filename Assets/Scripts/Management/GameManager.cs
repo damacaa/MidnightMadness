@@ -19,12 +19,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-#if UNITY_EDITOR
-        QualitySettings.vSyncCount = 0; // VSync must be disabled.
-        Application.targetFrameRate = 144;
-#endif
-
     }
 
     public static void EndGame()
@@ -51,7 +45,7 @@ public class GameManager : MonoBehaviour
         }
 
         PlayerController.instance.attackController.Reload();
-        PlayerController.instance.attackController.ThrowWeapon();
+        PlayerController.instance.attackController.DropWeapon();
         PlayerController.instance.transform.position = Vector2.zero;
         PlayerController.instance.injured = false;
         EnemyFactoryManager.instance.Restart();
@@ -81,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     public static void StartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
     public static void ExitGame()
     {

@@ -9,7 +9,7 @@ public class DialogManager : MonoBehaviour
     public static DialogManager instance;
 
     public DialogZoneBehaviour selectedZone = null;
-
+ 
 
     public bool dialogStarted = false;
 
@@ -22,6 +22,7 @@ public class DialogManager : MonoBehaviour
 
     Dialog currentDialog = null;
     Coroutine dialogCoroutine;
+    Coroutine cameraCoroutine;
 
     // Start is called before the first frame update
     private void Awake()
@@ -36,6 +37,16 @@ public class DialogManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+       
+    }
+
+    public void AddDialog(string text, Transform target)
+    {
+        dialogQueue.Enqueue(new Dialog(text, target));
+    }
+
     public void AddDialog(Dialog dialog)
     {
         dialogQueue.Enqueue(dialog);
@@ -44,7 +55,7 @@ public class DialogManager : MonoBehaviour
     public void StartDialog()
     {
         ShowDialog(dialogQueue.Dequeue());
-        PlayerController.instance.movementController.Move(0, 0);
+        PlayerController.instance.movementController.Move(0,0);
     }
 
     void ShowDialog(Dialog dialog)
@@ -59,13 +70,12 @@ public class DialogManager : MonoBehaviour
 
         UIManager.instance.ShowDialog();
 
-        if (dialog.target)
-            CameraFollowCharacter.instance.LookAt(dialog.target);
+        CameraFollowCharacter.instance.LookAt(dialog.target);
         InputManager.instance.locked = true;
         EnemyFactoryManager.instance.Restart();
         EnemyFactoryManager.instance.Pause();
 
-        dialogCoroutine = StartCoroutine(ShowDialogCoroutine(dialog.text));
+        dialogCoroutine =  StartCoroutine(ShowDialogCoroutine(dialog.text));
     }
 
     IEnumerator ShowDialogCoroutine(string text)

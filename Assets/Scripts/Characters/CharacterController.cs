@@ -43,16 +43,9 @@ public class CharacterController : MonoBehaviour
         yield return null;
     }
 
-    public void Hurt()
-    {
-        Debug.Log("Ouch");
-        Die();
-    }
-
     protected virtual void Die()
     {
-        Debug.Log("Death");
-        attackController.DropWeapon();
+        Debug.Log("Ouch");
     }
 
     public void Move(float x, float y)
@@ -63,8 +56,5 @@ public class CharacterController : MonoBehaviour
             movementController.Move(x, y);
     }
 
-    public void LookAtPlayer()
-    {
-        transform.up = PlayerController.instance.transform.position - transform.position;
-    }
+
 }
