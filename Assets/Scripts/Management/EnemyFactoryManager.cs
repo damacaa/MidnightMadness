@@ -8,9 +8,9 @@ public class EnemyFactoryManager : MonoBehaviour
     public GameObject enemyPrefab;
     public float spawnWait;
     float nextSpawnTime;
-    private bool working = true;
+    private bool working = false;
 
-    public Transform[] spawnPoints;
+    Transform[] spawnPoints;
 
     private void Awake()
     {
@@ -27,7 +27,14 @@ public class EnemyFactoryManager : MonoBehaviour
     private void Start()
     {
         nextSpawnTime = Time.time + spawnWait;
+        spawnPoints = new Transform[transform.childCount];
+        for (int i = 0; i < spawnPoints.Length; i++)
+        {
+            spawnPoints[i] = transform.GetChild(i);
+            working = true;
+        }
     }
+
     private void Update()
     {
         if (working && Time.time > nextSpawnTime)
@@ -39,7 +46,18 @@ public class EnemyFactoryManager : MonoBehaviour
     private void SpawnEnemy()
     {
         nextSpawnTime = Time.time + spawnWait;
+
         int spawnPoint = Random.Range(0, spawnPoints.Length);
+        Vector3 screenPos = Camera.main.WorldToViewportPoint(spawnPoints[spawnPoint].position);
+        int count = 0;
+        while (screenPos.x > 0 && screenPos.x < 1 && count < spawnPoints.Length)
+        {
+            spawnPoint = Random.Range(0, spawnPoints.Length);
+            count++;
+        }
+
+        if (count >= spawnPoints.Length)
+            return;
 
         GameObject.Instantiate(enemyPrefab, spawnPoints[spawnPoint].position, Quaternion.identity);
     }

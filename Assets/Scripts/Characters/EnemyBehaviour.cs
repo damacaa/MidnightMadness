@@ -18,9 +18,10 @@ public class EnemyBehaviour : CharacterController
         range = attackController.Range;
     }
 
-    public new void Die()
+    protected override void Die()
     {
         ScoreManager.instance.AddScore(score);
+        attackController.DropWeapon();
         Destroy(gameObject);
     }
 
@@ -43,12 +44,5 @@ public class EnemyBehaviour : CharacterController
             attackController.Attack();
             attackController.Release();
         }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //Debug.Log("Collison with: "+collision.gameObject.name);
-        if (collision.collider.tag == "Bullet")
-            Die();
     }
 }
