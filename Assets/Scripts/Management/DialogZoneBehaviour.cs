@@ -7,6 +7,7 @@ using UnityEngine.Events;
 
 public class DialogZoneBehaviour : MonoBehaviour
 {
+    public UnityEvent startEvent;
     public Dialog[] dialogs;
     public bool isOptional = true;
     public bool destroyAfter = false;
@@ -18,6 +19,7 @@ public class DialogZoneBehaviour : MonoBehaviour
 
     public void StartDialog()
     {
+        startEvent.Invoke();
         for (int i = 0; i < dialogs.Length; i++)
         {
             DialogManager.instance.AddDialog(dialogs[i]);

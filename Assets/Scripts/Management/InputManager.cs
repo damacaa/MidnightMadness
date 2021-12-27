@@ -82,7 +82,7 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetButtonDown("Fire2"))
         {
-            PlayerController.instance.attackController.DropWeapon();
+            PlayerController.instance.attackController.ThrowWeapon();
         }
 
         if (Input.GetButtonDown("Reload"))
@@ -106,9 +106,13 @@ public class InputManager : MonoBehaviour
     void PlayerLookAtMouse()
     {
         // convert mouse position into world coordinates
-        Vector2 mouseScreenPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        ////Vector2 mouseScreenPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mouseScreenPosition = Input.mousePosition;
+        //Debug.Log(mouseScreenPosition);
         // get direction you want to point at
-        Vector2 direction = (mouseScreenPosition - (Vector2)PlayerController.instance.transform.position).normalized;
+        Vector2 center = new Vector2(Screen.width / 2, Screen.height / 2);
+        ///Vector2 direction = (mouseScreenPosition - (Vector2)PlayerController.instance.transform.position).normalized;
+        Vector2 direction = (mouseScreenPosition - center).normalized;
         // set vector of transform directly
         PlayerController.instance.transform.up = direction;
     }
