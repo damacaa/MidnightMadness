@@ -45,7 +45,7 @@ public class CharacterController : MonoBehaviour
         yield return null;
     }
 
-    public void Hurt()
+    public virtual void Hurt()
     {
         //Debug.Log("Ouch");
         Die();

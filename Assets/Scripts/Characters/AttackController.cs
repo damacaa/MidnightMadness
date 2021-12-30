@@ -135,7 +135,7 @@ public class AttackController : MonoBehaviour
             }
         }
 
-        StartCoroutine(StopMeleeAfter(0.25f));
+        StartCoroutine(StopMeleeAfter(0.1f));
         GetComponentInParent<CharacterController>().UpdateSprite();
     }
 

@@ -8,6 +8,7 @@ public class PlayerController : CharacterController
 
     Animator animator;
     public bool injured = false;
+    public bool infiniteHealth = false;
 
     private void Start()
     {
@@ -51,7 +52,7 @@ public class PlayerController : CharacterController
         }
     }
 
-    public new void Hurt()
+    public override void Hurt()
     {
         if (GameManager.pause)
             return;
