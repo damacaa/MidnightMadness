@@ -13,6 +13,11 @@ public class EnemyBehaviour : CharacterController
 
     NavMeshAgent agent;
 
+    SpriteRenderer spriteRenderer;
+    public Sprite normalSprite;
+    public Sprite attackSprite;
+    public Sprite hurtSprite;
+
     private void Start()
     {
         playerMask = LayerMask.GetMask("Player");
@@ -24,6 +29,8 @@ public class EnemyBehaviour : CharacterController
         agent.updateUpAxis = false;
 
         agent.destination = transform.position;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = normalSprite;
     }
 
     protected override void Die()
@@ -36,11 +43,13 @@ public class EnemyBehaviour : CharacterController
 
     private void Update()
     {
-        if (!target || GameManager.pause || !isAwake)
+        if (!target || GameManager.pause || !isAwake || !PlayerController.instance.isAwake)
         {
+            agent.enabled = false;
             return;
         }
 
+        agent.enabled = true;
         agent.destination = target.transform.position;
 
         Vector2 dir = target.transform.position - transform.position;
@@ -56,4 +65,16 @@ public class EnemyBehaviour : CharacterController
             attackController.Release();
         }
     }
+
+    public override void UpdateSprite()
+    {
+        if (!isAwake)
+            spriteRenderer.sprite = hurtSprite;
+        else if (attackController.weapon || attackController.attackingMelee)
+            spriteRenderer.sprite = attackSprite;
+        else
+            spriteRenderer.sprite = normalSprite;
+    }
+
+
 }

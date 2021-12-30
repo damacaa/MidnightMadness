@@ -5,6 +5,7 @@ using UnityEngine;
 public class AttackController : MonoBehaviour
 {
     public Transform handPos;
+    public bool attackingMelee = false;
     public WeaponController weapon = null;
 
     public float Range
@@ -40,7 +41,7 @@ public class AttackController : MonoBehaviour
         {
             weapon.Shoot();
         }
-        else
+        else if (!attackingMelee)
         {
             MeleeAttack();
         }
@@ -78,6 +79,8 @@ public class AttackController : MonoBehaviour
 
         if (weapon.currentAmmo == 0)
             weapon.Reload();
+
+        GetComponentInParent<CharacterController>().UpdateSprite();
     }
 
     public void ThrowWeapon()
@@ -94,6 +97,7 @@ public class AttackController : MonoBehaviour
         weapon.reloading = false;
         weapon.flying = true;
         weapon = null;
+        GetComponentInParent<CharacterController>().UpdateSprite();
     }
 
     public void DropWeapon()
@@ -110,10 +114,12 @@ public class AttackController : MonoBehaviour
         weapon.reloading = false;
         //weapon.flying = true;
         weapon = null;
+        GetComponentInParent<CharacterController>().UpdateSprite();
     }
 
     public void MeleeAttack()
     {
+        attackingMelee = true;
         RaycastHit2D[] hits = Physics2D.CircleCastAll(handPos.position, Range, transform.up);
         for (int i = 0; i < hits.Length; i++)
         {
@@ -125,17 +131,25 @@ public class AttackController : MonoBehaviour
             {
                 Vector2 dir = hits[i].collider.transform.position - transform.position;
                 dir.Normalize();
-                cc.Stun(3f, dir);
+                cc.Stun(1f, dir);
             }
         }
+
+        StartCoroutine(StopMeleeAfter(0.25f));
+        GetComponentInParent<CharacterController>().UpdateSprite();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    IEnumerator StopMeleeAfter(float time)
     {
-        /*if (collision.tag == "Weapon" && weapon == null)
-        {
-            PickupWeapon(collision.GetComponent<WeaponController>());
-        }*/
+        yield return new WaitForSeconds(time);
+        StopMelee();
+        yield return null;
+    }
+
+    public void StopMelee()
+    {
+        attackingMelee = false;
+        GetComponentInParent<CharacterController>().UpdateSprite();
     }
 
 
