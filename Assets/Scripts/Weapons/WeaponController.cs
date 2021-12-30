@@ -78,12 +78,16 @@ public class WeaponController : MonoBehaviour
                 triggerReleased = false;
                 nextShootTime = Time.time + (1f / rateOfFire);
                 ShootBullet();
+                AudioManager.instance.PlayOnce("disparo");
+                StartCoroutine(CameraShake(0.1f, 0.5f));
             }
 
             if (shootingMode == ShootingMode.Automatic)
             {
                 nextShootTime = Time.time + (1f / rateOfFire);
                 ShootBullet();
+                AudioManager.instance.PlayOnce("disparo");
+                StartCoroutine(CameraShake(0.1f,0.5f));
             }
         }
     }
@@ -138,5 +142,26 @@ public class WeaponController : MonoBehaviour
         ammo -= newAmmo;
         reloading = false;
         yield return null;
+    }
+
+    IEnumerator CameraShake(float time, float scale)
+    {
+        Camera camera = GameObject.FindObjectOfType<Camera>();
+
+        float elapsedTime = 0.0f;
+        Vector3 initialPosition = camera.transform.position;
+        while (elapsedTime < time)
+        {
+           
+            float x = UnityEngine.Random.Range(-0.3f, 0.3f)*scale;
+            float y = UnityEngine.Random.Range(-0.3f, 0.3f)*scale;
+            camera.transform.position += new Vector3(x, y, 0);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+
+        camera.transform.position = initialPosition;
+        
     }
 }
