@@ -17,8 +17,10 @@ public class UIManager : MonoBehaviour
     public GameObject pauseButton;
 
     public GameObject optionsMenu;
+    public GameObject pause;
 
     public GameObject endMenu;
+    public Slider volumeBar;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -50,7 +52,8 @@ public class UIManager : MonoBehaviour
         HideDialog();
         pauseMenu.SetActive(false);
         pauseButton.SetActive(true);
-
+        volumeBar.value = AudioManager.instance.volume;
+        volumeBar.onValueChanged.AddListener(delegate { UpdateBar(volumeBar.value); });
     }
 
     // Update is called once per frame
@@ -60,6 +63,12 @@ public class UIManager : MonoBehaviour
         ammoText.text = PlayerController.instance.attackController.GetAmmoString();
 
     }
+
+    public void UpdateBar(float value)
+    {
+        AudioManager.instance.UpdateVolume(value);
+    }
+
 
     public void ShowInteract()
     {
@@ -106,14 +115,15 @@ public class UIManager : MonoBehaviour
     public void HideOptions()
     {
         optionsMenu.SetActive(false);
-        pauseMenu.SetActive(true);
+        pause.SetActive(true);
 
     }
 
     public void ShowOptions()
     {
+
         optionsMenu.SetActive(true);
-        pauseMenu.SetActive(false);
+        pause.SetActive(false);
     }
 
 
