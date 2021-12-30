@@ -5,7 +5,10 @@ using UnityEngine;
 public class PlayerController : CharacterController
 {
     public static PlayerController instance;
+
+    Animator animator;
     public bool injured = false;
+    public bool infiniteHealth = false;
 
     private void Start()
     {
@@ -24,6 +27,7 @@ public class PlayerController : CharacterController
         }
         attackController = GetComponent<AttackController>();
         movementController = GetComponent<MovementController>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -48,7 +52,7 @@ public class PlayerController : CharacterController
         }
     }
 
-    public new void Hurt()
+    public override void Hurt()
     {
         if (GameManager.pause)
             return;
@@ -96,5 +100,16 @@ public class PlayerController : CharacterController
         transform.parent = null;
         rb.isKinematic = false;
         GetComponent<Collider2D>().enabled = true;
+    }
+
+
+    public override void UpdateSprite()
+    {
+        animator.SetBool("HasWeapon", attackController.weapon || attackController.attackingMelee);
+
+        if (isAwake)
+            animator.SetTrigger("Recover");
+        else
+            animator.SetTrigger("GetHurt");
     }
 }

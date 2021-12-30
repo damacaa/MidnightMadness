@@ -30,29 +30,33 @@ public class CharacterController : MonoBehaviour
 
         transform.up = -dir;
 
-        rb.AddForce(dir * 10f, ForceMode2D.Impulse);
+        rb.AddForce(dir * 100f, ForceMode2D.Impulse);
 
         isAwake = false;
         StartCoroutine(RecoverAfter(time));
+        UpdateSprite();
     }
 
     IEnumerator RecoverAfter(float time)
     {
         yield return new WaitForSeconds(time);
         isAwake = true;
+        UpdateSprite();
         yield return null;
     }
 
-    public void Hurt()
+    public virtual void Hurt()
     {
-        Debug.Log("Ouch");
+        //Debug.Log("Ouch");
         Die();
+        UpdateSprite();
     }
 
     protected virtual void Die()
     {
         Debug.Log("Death");
         attackController.DropWeapon();
+        UpdateSprite();
     }
 
     public void Move(float x, float y)
@@ -67,4 +71,7 @@ public class CharacterController : MonoBehaviour
     {
         transform.up = PlayerController.instance.transform.position - transform.position;
     }
+
+    public virtual void UpdateSprite() { }
+    public virtual void AttackSprite() { }
 }

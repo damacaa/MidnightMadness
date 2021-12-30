@@ -5,12 +5,21 @@ using UnityEngine;
 public class EnemyFactoryManager : MonoBehaviour
 {
     public static EnemyFactoryManager instance;
+
+    public bool working = false;
+
     public GameObject enemyPrefab;
     public float spawnWait;
     float nextSpawnTime;
-    private bool working = false;
 
-    Transform[] spawnPoints;
+    public Transform[] spawnPoints;
+    BusController[] buses;
+
+    public int currentWave = 0;
+    public int waves = 3;
+    public int enemiesPerWave = 10;
+    private float enemyCounter = 0;
+    bool spawning = false;
 
     private void Awake()
     {
@@ -26,40 +35,45 @@ public class EnemyFactoryManager : MonoBehaviour
 
     private void Start()
     {
-        nextSpawnTime = Time.time + spawnWait;
-        spawnPoints = new Transform[transform.childCount];
-        for (int i = 0; i < spawnPoints.Length; i++)
-        {
-            spawnPoints[i] = transform.GetChild(i);
-            working = true;
-        }
+        buses = GameObject.FindObjectsOfType<BusController>();
+
+        StartGame();
     }
 
-    private void Update()
+    public void StartGame()
     {
-        if (working && Time.time > nextSpawnTime)
-        {
-            SpawnEnemy();
-        }
-    }
-
-    private void SpawnEnemy()
-    {
-        nextSpawnTime = Time.time + spawnWait;
-
-        int spawnPoint = Random.Range(0, spawnPoints.Length);
-        Vector3 screenPos = Camera.main.WorldToViewportPoint(spawnPoints[spawnPoint].position);
-        int count = 0;
-        while (screenPos.x > 0 && screenPos.x < 1 && count < spawnPoints.Length)
-        {
-            spawnPoint = Random.Range(0, spawnPoints.Length);
-            count++;
-        }
-
-        if (count >= spawnPoints.Length)
+        if (!working)
             return;
 
-        GameObject.Instantiate(enemyPrefab, spawnPoints[spawnPoint].position, Quaternion.identity);
+        spawning = true;
+        foreach (BusController b in buses)
+        {
+            b.RollIn();
+        }
+
+        StartCoroutine(SpawnEnemies(buses[0].time));
+    }
+
+    IEnumerator SpawnEnemies(float initialWait)
+    {
+        yield return new WaitForSeconds(initialWait);
+        for (int i = 0; i < enemiesPerWave; i++)
+        {
+            int spawnPoint = Random.Range(0, spawnPoints.Length);
+            GameObject.Instantiate(enemyPrefab, spawnPoints[spawnPoint].position, Quaternion.identity);
+            enemyCounter++;
+            yield return new WaitForSeconds(spawnWait);
+        }
+
+        foreach (BusController b in buses)
+        {
+            b.RollOut();
+        }
+
+        currentWave++;
+        spawning = false;
+
+        yield return null;
     }
 
     internal void Restart()
@@ -76,5 +90,14 @@ public class EnemyFactoryManager : MonoBehaviour
     {
         working = true;
         nextSpawnTime = Time.time + spawnWait;
+    }
+
+    public void DecreaseEnemyCounter()
+    {
+        enemyCounter--;
+        if(enemyCounter == 0 && !spawning)
+        {
+            StartGame();
+        }
     }
 }
