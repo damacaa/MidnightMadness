@@ -8,4 +8,9 @@ public class DoormanBehaviour : MonoBehaviour
     {
         transform.position = new Vector3(0, -2);
     }
+
+    public void MoveRight()
+    {
+        transform.position = new Vector3(2, -2);
+    }
 }

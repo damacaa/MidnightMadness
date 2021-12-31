@@ -96,19 +96,19 @@ public class UIManager : MonoBehaviour
     {
         pauseMenu.SetActive(false);
         //pauseButton.SetActive(true);
-        GameManager.ResumeGame();
+        GameManager.instance.ResumeGame();
     }
 
     public void PauseGame()
     {
         pauseMenu.SetActive(true);
         //pauseButton.SetActive(false);
-        GameManager.PauseGame();
+        GameManager.instance.PauseGame();
     }
 
     public void ExitGame()
     {
-        GameManager.GoToMenu();
+        GameManager.instance.GoToMenu();
     }
 
 

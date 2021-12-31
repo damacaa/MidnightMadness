@@ -40,7 +40,7 @@ public class UIManagerMainMenu : MonoBehaviour
 
     public void ExitGame()
     {
-        GameManager.ExitGame();
+        GameManager.instance.ExitGame();
     }
 
     public void ShowOptionsMenu()

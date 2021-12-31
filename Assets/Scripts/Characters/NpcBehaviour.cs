@@ -5,4 +5,9 @@ using UnityEngine;
 public class NpcBehaviour : CharacterController
 {
     public bool isFriend = false;
+
+    public override void Hurt()
+    {
+        LookAtPlayer();
+    }
 }
