@@ -50,6 +50,15 @@ public class VehicleController : MonoBehaviour
         if (y < 0 && Vector2.Dot(rb.velocity, transform.up) > 0.1f)
             return;
 
+        if (!AudioManager.instance.isPlaying("cocheEnMarcha") && rb.velocity.magnitude > 1)
+        {
+            AudioManager.instance.PlayLoop("cocheEnMarcha");
+        }
+        if(AudioManager.instance.isPlaying("cocheEnMarcha") && rb.velocity.magnitude < 1)
+        {
+            AudioManager.instance.Pause("cocheEnMarcha");
+        }
+
         rb.AddForce(transform.up * speed * y, ForceMode2D.Force);
 
         float turnFactor = Mathf.Clamp01(rb.velocity.magnitude / 8);
@@ -120,6 +129,7 @@ public class VehicleController : MonoBehaviour
                 passengers[i] = null;
                 if (turnedOn && i == 0)
                     TurnOff();
+                AudioManager.instance.Stop("cocheEnMarcha");
                 return;
             }
         }
