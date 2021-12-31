@@ -6,13 +6,14 @@ public class PlayerController : CharacterController
 {
     public static PlayerController instance;
 
-    Animator animator;
+    public Animator animator;
     public bool injured = false;
     public bool infiniteHealth = false;
+    public GameObject bloodTrail;
 
     private void Start()
     {
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(0,-2500));
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, -2500));
     }
 
     private new void Awake()
@@ -29,6 +30,7 @@ public class PlayerController : CharacterController
         attackController = GetComponent<AttackController>();
         movementController = GetComponent<MovementController>();
         animator = GetComponent<Animator>();
+        bloodTrail.SetActive(false);
     }
 
     private void Update()
@@ -59,19 +61,25 @@ public class PlayerController : CharacterController
             return;
 
         AudioManager.instance.PlayOnce("quejido1");
+        GameManager.instance.SplashBlood(transform.position);
+
         if (injured)
         {
             Die();
+            animator.SetTrigger("GetHurt");
+            animator.enabled = false;
         }
         else
         {
             injured = true;
+            bloodTrail.SetActive(true);
         }
     }
 
     public void Heal()
     {
         injured = false;
+        bloodTrail.SetActive(false);
     }
 
     public new void Die()

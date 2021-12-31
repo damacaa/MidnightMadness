@@ -150,11 +150,12 @@ public class WeaponController : MonoBehaviour
 
         float elapsedTime = 0.0f;
         Vector3 initialPosition = camera.transform.position;
+
         while (elapsedTime < time)
         {
            
-            float x = UnityEngine.Random.Range(-0.3f, 0.3f)*scale;
-            float y = UnityEngine.Random.Range(-0.3f, 0.3f)*scale;
+            float x = UnityEngine.Random.Range(-0.1f, 0.1f)*scale;
+            float y = UnityEngine.Random.Range(-0.1f, 0.1f)*scale;
             camera.transform.position += new Vector3(x, y, 0);
             elapsedTime += Time.deltaTime;
             yield return null;

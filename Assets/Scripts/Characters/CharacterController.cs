@@ -48,6 +48,7 @@ public class CharacterController : MonoBehaviour
     public virtual void Hurt()
     {
         //Debug.Log("Ouch");
+        GameManager.instance.SplashBlood(transform.position);
         Die();
         UpdateSprite();
     }

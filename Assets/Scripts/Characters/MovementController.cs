@@ -25,5 +25,9 @@ public class MovementController : MonoBehaviour
     public void EnableMovement()
     {
         canMove = true;
+        if(TryGetComponent<PlayerController>(out PlayerController player))
+        {
+            player.animator.SetTrigger("Recover");
+        }
     }
 }

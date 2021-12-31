@@ -48,7 +48,6 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        AudioManager.instance.PlayLoop("music");
         HideInteract();
         HideDialog();
         pauseMenu.SetActive(false);

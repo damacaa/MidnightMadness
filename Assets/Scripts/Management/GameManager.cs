@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     public static bool gameEnd = false;
     public static bool pause = false;
 
+    public GameObject bloodSplash;
+
     private void Awake()
     {
         if (instance == null)
@@ -64,6 +66,7 @@ public class GameManager : MonoBehaviour
 
     public static void GoToMenu()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
 
@@ -86,6 +89,11 @@ public class GameManager : MonoBehaviour
     public static void ExitGame()
     {
         Application.Quit();
+    }
+
+    public void SplashBlood(Vector3 pos)
+    {
+        GameObject.Instantiate(bloodSplash).transform.position = pos;
     }
 
 }

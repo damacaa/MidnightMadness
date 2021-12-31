@@ -38,7 +38,18 @@ public class EnemyBehaviour : CharacterController
         ScoreManager.instance.AddScore(score);
         attackController.DropWeapon();
         EnemyFactoryManager.instance.DecreaseEnemyCounter();
+        isAwake = false;
+        spriteRenderer.sprite = hurtSprite;
+        GetComponent<Collider2D>().enabled = false;
+        StartCoroutine(DestroyAfter(5f));
+    }
+
+    IEnumerator DestroyAfter(float t)
+    {
+        yield return new WaitForSeconds(t);
         Destroy(gameObject);
+        GameManager.instance.SplashBlood(transform.position);
+        yield return null;
     }
 
     private void Update()
