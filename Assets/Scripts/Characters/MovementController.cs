@@ -17,12 +17,13 @@ public class MovementController : MonoBehaviour
 
     public void Move(float x, float y)
     {
+        if (!canMove)
+            return;
         rb.velocity = speed * new Vector2(x, y);
     }
 
-    //Needs to go somewhere else
-    void Update()
+    public void EnableMovement()
     {
-        
+        canMove = true;
     }
 }

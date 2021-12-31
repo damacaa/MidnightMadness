@@ -21,6 +21,8 @@ public class EnemyFactoryManager : MonoBehaviour
     private float enemyCounter = 0;
     bool spawning = false;
 
+    float weaponProbability = 0;
+
     private void Awake()
     {
         if (instance == null)
@@ -36,15 +38,10 @@ public class EnemyFactoryManager : MonoBehaviour
     private void Start()
     {
         buses = GameObject.FindObjectsOfType<BusController>();
-
-        StartGame();
     }
 
     public void StartGame()
     {
-        if (!working)
-            return;
-
         spawning = true;
         foreach (BusController b in buses)
         {
@@ -60,7 +57,9 @@ public class EnemyFactoryManager : MonoBehaviour
         for (int i = 0; i < enemiesPerWave; i++)
         {
             int spawnPoint = Random.Range(0, spawnPoints.Length);
-            GameObject.Instantiate(enemyPrefab, spawnPoints[spawnPoint].position, Quaternion.identity);
+            EnemyBehaviour e = GameObject.Instantiate(enemyPrefab, spawnPoints[spawnPoint].position, Quaternion.identity).GetComponent<EnemyBehaviour>();
+            if (Random.value < weaponProbability)
+                e.attackController.weapon = ItemFactoryManager.instance.GetRandomWeapon(e.transform.position);
             enemyCounter++;
             yield return new WaitForSeconds(spawnWait);
         }
@@ -71,6 +70,7 @@ public class EnemyFactoryManager : MonoBehaviour
         }
 
         currentWave++;
+        weaponProbability += Mathf.Max(0, 1f / (waves - 1));
         spawning = false;
 
         yield return null;
@@ -95,7 +95,7 @@ public class EnemyFactoryManager : MonoBehaviour
     public void DecreaseEnemyCounter()
     {
         enemyCounter--;
-        if(enemyCounter == 0 && !spawning)
+        if (enemyCounter == 0 && !spawning)
         {
             StartGame();
         }

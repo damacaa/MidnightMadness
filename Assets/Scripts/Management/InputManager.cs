@@ -53,10 +53,8 @@ public class InputManager : MonoBehaviour
 
 
 
-        if (locked || !PlayerController.instance.isAwake)
-        {
+        if (locked || !PlayerController.instance.isAwake || !PlayerController.instance.movementController.canMove)
             return;
-        }
 
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
@@ -91,7 +89,7 @@ public class InputManager : MonoBehaviour
         }
 
 
-
+        
 
         if (controller)
         {
