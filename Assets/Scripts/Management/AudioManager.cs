@@ -58,6 +58,12 @@ public class AudioManager : MonoBehaviour
 
     }
 
+    public bool isPlaying(string name)
+    {
+        AudioSource a = sources.Find(sources => sources.clip.name == name);
+        return a.isPlaying;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

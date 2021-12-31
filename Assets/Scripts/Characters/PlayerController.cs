@@ -58,6 +58,7 @@ public class PlayerController : CharacterController
         if (GameManager.pause)
             return;
 
+        AudioManager.instance.PlayOnce("quejido1");
         if (injured)
         {
             Die();
