@@ -54,6 +54,7 @@ public class UIManager : MonoBehaviour
         //pauseButton.SetActive(true);
         volumeBar.value = AudioManager.instance.volume;
         volumeBar.onValueChanged.AddListener(delegate { UpdateBar(volumeBar.value); });
+        AudioManager.instance.PlayLoop("music");
     }
 
     // Update is called once per frame
