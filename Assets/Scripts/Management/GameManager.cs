@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = gameSpeed;
     }
 
-    public void StartGame()
+    public static void StartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
