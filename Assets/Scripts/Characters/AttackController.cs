@@ -68,6 +68,9 @@ public class AttackController : MonoBehaviour
 
     public void PickupWeapon(WeaponController weap)
     {
+        if (!handPos)
+            return;
+
         weapon = weap;
         weapon.GetComponent<Collider2D>().enabled = false;
         weapon.rigidBody.velocity = Vector2.zero;
@@ -159,7 +162,7 @@ public class AttackController : MonoBehaviour
         {
             if (collision.collider.GetComponent<WeaponController>().flying)
             {
-                GetComponent<CharacterController>().Stun(1f, -collision.collider.GetComponent<Rigidbody2D>().velocity.normalized);
+                GetComponent<CharacterController>().Stun(1f, collision.collider.GetComponent<Rigidbody2D>().velocity.normalized);
             }
             else
             {
