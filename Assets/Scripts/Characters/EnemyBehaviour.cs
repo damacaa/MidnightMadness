@@ -44,6 +44,7 @@ public class EnemyBehaviour : CharacterController
         if (Random.value > .9f)
             ItemFactoryManager.instance.GetRandomPowerUp(transform.position);
         StartCoroutine(DestroyAfter(5f));
+        AudioManager.instance.PlayOnce("quejido2");
     }
 
     IEnumerator DestroyAfter(float t)
