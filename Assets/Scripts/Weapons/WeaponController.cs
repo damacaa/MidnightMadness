@@ -79,7 +79,7 @@ public class WeaponController : MonoBehaviour
                 nextShootTime = Time.time + (1f / rateOfFire);
                 ShootBullet();
                 AudioManager.instance.PlayOnce("disparo");
-                StartCoroutine(CameraShake(0.1f, 0.5f));
+                CameraFollowCharacter.instance.ShakeCamera(0.1f);
             }
 
             if (shootingMode == ShootingMode.Automatic)
@@ -87,7 +87,7 @@ public class WeaponController : MonoBehaviour
                 nextShootTime = Time.time + (1f / rateOfFire);
                 ShootBullet();
                 AudioManager.instance.PlayOnce("disparo");
-                StartCoroutine(CameraShake(0.1f,0.5f));
+                CameraFollowCharacter.instance.ShakeCamera(0.1f);
             }
         }
     }
@@ -144,25 +144,5 @@ public class WeaponController : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator CameraShake(float time, float scale)
-    {
-        Camera camera = GameObject.FindObjectOfType<Camera>();
-
-        float elapsedTime = 0.0f;
-        Vector3 initialPosition = camera.transform.position;
-
-        while (elapsedTime < time)
-        {
-           
-            float x = UnityEngine.Random.Range(-0.1f, 0.1f)*scale;
-            float y = UnityEngine.Random.Range(-0.1f, 0.1f)*scale;
-            camera.transform.position += new Vector3(x, y, 0);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        
-
-        camera.transform.position = initialPosition;
-        
-    }
+    
 }

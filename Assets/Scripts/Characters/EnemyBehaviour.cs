@@ -41,6 +41,8 @@ public class EnemyBehaviour : CharacterController
         isAwake = false;
         spriteRenderer.sprite = hurtSprite;
         GetComponent<Collider2D>().enabled = false;
+        if (Random.value > .9f)
+            ItemFactoryManager.instance.GetRandomPowerUp(transform.position);
         StartCoroutine(DestroyAfter(5f));
     }
 
@@ -54,6 +56,14 @@ public class EnemyBehaviour : CharacterController
 
     private void Update()
     {
+        if (PlayerController.instance.dead)
+        {
+            agent.enabled = true;
+            agent.destination = EnemyFactoryManager.instance.transform.GetChild(0).position;
+            Destroy(this);
+            return;
+        }
+
         if (!target || GameManager.pause || !isAwake || !PlayerController.instance.isAwake)
         {
             agent.enabled = false;

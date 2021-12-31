@@ -55,7 +55,7 @@ public class CharacterController : MonoBehaviour
 
     protected virtual void Die()
     {
-        Debug.Log("Death");
+        //Debug.Log("Death");
         attackController.DropWeapon();
         UpdateSprite();
     }

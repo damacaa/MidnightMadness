@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthPowerUp : PowerUp
+public class InvincibilityPowerUp : PowerUp
 {
     protected override void Effect()
     {
-        
+
         if (!PlayerController.instance.injured)
             return;
 

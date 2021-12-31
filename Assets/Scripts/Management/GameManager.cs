@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public static bool gameEnd = false;
+    public static float gameEndTime = 0;
     public static bool pause = false;
 
     public GameObject bloodSplash;
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
     public static void EndGame()
     {
         gameEnd = true;
+        gameEndTime = Time.time;
         UIManager.instance.ShowEnd();
         InputManager.instance.locked = true;
     }
@@ -94,6 +96,11 @@ public class GameManager : MonoBehaviour
     public void SplashBlood(Vector3 pos)
     {
         GameObject.Instantiate(bloodSplash).transform.position = pos;
+    }
+
+    public static void Victory()
+    {
+        Debug.Log("Victoria");
     }
 
 }

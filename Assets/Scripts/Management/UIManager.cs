@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour
         HideInteract();
         HideDialog();
         pauseMenu.SetActive(false);
-        pauseButton.SetActive(true);
+        //pauseButton.SetActive(true);
         volumeBar.value = AudioManager.instance.volume;
         volumeBar.onValueChanged.AddListener(delegate { UpdateBar(volumeBar.value); });
     }
@@ -95,14 +95,14 @@ public class UIManager : MonoBehaviour
     public void ResumeGame()
     {
         pauseMenu.SetActive(false);
-        pauseButton.SetActive(true);
+        //pauseButton.SetActive(true);
         GameManager.ResumeGame();
     }
 
     public void PauseGame()
     {
         pauseMenu.SetActive(true);
-        pauseButton.SetActive(false);
+        //pauseButton.SetActive(false);
         GameManager.PauseGame();
     }
 
