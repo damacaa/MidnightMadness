@@ -28,6 +28,8 @@ public class AudioManager : MonoBehaviour
             a.clip = sounds[i];
             sources.Add(a);
         }
+
+        PlayLoop("music");
     }
 
     public void PlayOnce(string name)

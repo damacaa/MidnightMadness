@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class InvincibilityPowerUp : PowerUp
 {
-    protected override void Effect()
+    protected override bool Effect()
     {
-        AudioManager.instance.PlayOnce("recogerJeringuilla");
-        if (!PlayerController.instance.injured)
-            return;
-
         
-        PlayerController.instance.Heal();
+        if (PlayerController.instance.infiniteHealth)
+            return false;
+
+        AudioManager.instance.PlayOnce("recogerPorro");
+        PlayerController.instance.MakeInvincible();
         Destroy(gameObject);
+        return true;
     }
 }

@@ -11,6 +11,7 @@ public class PlayerController : CharacterController
     public bool injured = false;
     public bool dead = false;
     public bool infiniteHealth = false;
+    public bool damageBoost = false;
     public GameObject bloodTrail;
     public GameObject throwUp;
     public Transform endGame;
@@ -153,5 +154,37 @@ public class PlayerController : CharacterController
         agent.destination = endGame.position;
 
 
+    }
+
+
+    public void BoostDamage()
+    {
+        if (damageBoost)
+            return;
+        damageBoost = true;
+        StartCoroutine(RestoreDamageAfter(10f));
+    }
+
+    public void MakeInvincible()
+    {
+        if (infiniteHealth)
+            return;
+        infiniteHealth = true;
+        injured = false;
+        StartCoroutine(RestoreInvincibilityAfter(3f));
+    }
+
+    IEnumerator RestoreInvincibilityAfter(float time)
+    {
+        yield return new WaitForSeconds(time);
+        infiniteHealth = false;
+        yield return null;
+    }
+
+    IEnumerator RestoreDamageAfter(float time)
+    {
+        yield return new WaitForSeconds(time);
+        damageBoost = false;
+        yield return null;
     }
 }

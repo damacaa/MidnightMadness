@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class SpeedPowerUp : PowerUp
 {
-    protected override void Effect()
+    protected override bool Effect()
     {
         AudioManager.instance.PlayOnce("recogerPastillas");
-        if (!PlayerController.instance.injured)
-            return;
 
-        
-        PlayerController.instance.Heal();
+
+        GameManager.instance.IncreaseGameSpeed();
+        PlayerController.instance.movementController.speed += 2f;
         Destroy(gameObject);
+        return true;
     }
 }

@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class HealthPowerUp : PowerUp
 {
-    protected override void Effect()
+    protected override bool Effect()
     {
-        
         if (!PlayerController.instance.injured)
-            return;
+            return false;
 
         AudioManager.instance.PlayOnce("recogerCocacola");
         PlayerController.instance.Heal();
-        Destroy(gameObject);
+        return true;
     }
 }

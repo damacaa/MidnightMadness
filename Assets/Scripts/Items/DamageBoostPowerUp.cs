@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class DamageBoostPowerUp : PowerUp
 {
-    protected override void Effect()
+  protected override bool Effect()
     {
-        AudioManager.instance.PlayOnce("recogerPorro");
-        if (!PlayerController.instance.injured)
-            return;
-
+        if (PlayerController.instance.damageBoost)
+            return false;
         
-        PlayerController.instance.Heal();
-        Destroy(gameObject);
+        AudioManager.instance.PlayOnce("recogerJeringuilla");
+        PlayerController.instance.BoostDamage();
+        return true;
     }
 }

@@ -118,7 +118,7 @@ public class GameManager : MonoBehaviour
 
     public void IncreaseGameSpeed()
     {
-        gameSpeed -= .05f;
+        gameSpeed -= .1f;
         Time.timeScale = gameSpeed;
     }
 }
