@@ -42,6 +42,13 @@ public class EnemyFactoryManager : MonoBehaviour
 
     public void StartGame()
     {
+        if(currentWave == waves)
+        {
+            GameManager.Victory();
+            return;
+        }
+
+
         spawning = true;
         foreach (BusController b in buses)
         {

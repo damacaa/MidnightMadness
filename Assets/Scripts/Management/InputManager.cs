@@ -26,11 +26,13 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.gameEnd && Input.anyKeyDown)
+        if (GameManager.gameEnd && Input.GetKey(KeyCode.R))
         {
             GameManager.RestartGame();
             return;
         }
+
+        
 
         //Dialog interaction
         if (DialogManager.instance.selectedZone != null && Input.GetKeyDown(KeyCode.E) && !DialogManager.instance.dialogStarted)
@@ -44,6 +46,12 @@ public class InputManager : MonoBehaviour
             DialogManager.instance.NextDialog();
             return;
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+            UIManager.instance.PauseGame();
+
+        if (GameManager.pause)
+            return;
 
         if (VehicleController.selectedVehicle != null && Input.GetKeyDown(KeyCode.E))
         {

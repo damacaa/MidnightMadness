@@ -14,6 +14,4 @@ public class HealthPowerUp : PowerUp
         PlayerController.instance.Heal();
         Destroy(gameObject);
     }
-
-    
 }

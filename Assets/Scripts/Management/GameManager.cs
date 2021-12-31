@@ -7,7 +7,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public static bool gameEnd = false;
+    public static float gameEndTime = 0;
     public static bool pause = false;
+
+    public GameObject bloodSplash;
 
     private void Awake()
     {
@@ -30,6 +33,7 @@ public class GameManager : MonoBehaviour
     public static void EndGame()
     {
         gameEnd = true;
+        gameEndTime = Time.time;
         UIManager.instance.ShowEnd();
         InputManager.instance.locked = true;
     }
@@ -64,6 +68,7 @@ public class GameManager : MonoBehaviour
 
     public static void GoToMenu()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
 
@@ -86,6 +91,16 @@ public class GameManager : MonoBehaviour
     public static void ExitGame()
     {
         Application.Quit();
+    }
+
+    public void SplashBlood(Vector3 pos)
+    {
+        GameObject.Instantiate(bloodSplash).transform.position = pos;
+    }
+
+    public static void Victory()
+    {
+        Debug.Log("Victoria");
     }
 
 }

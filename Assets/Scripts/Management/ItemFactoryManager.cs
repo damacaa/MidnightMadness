@@ -41,7 +41,7 @@ public class ItemFactoryManager : MonoBehaviour
         {
             SpawnPowerUp();
         }
-        
+
         if (Time.time > nextWeaponSpawnTime)
         {
             SpawnWeapon();
@@ -69,10 +69,10 @@ public class ItemFactoryManager : MonoBehaviour
     float size = 5;
     Vector2 GetRandomPos()
     {
-        float x = Random.Range(-size,size);
-        float y = Random.Range(-size,size);
+        float x = Random.Range(-size, size);
+        float y = Random.Range(-size, size);
 
-        return new Vector2(x,y);
+        return new Vector2(x, y);
     }
 
     public WeaponController GetRandomWeapon(Vector3 pos = new Vector3())
@@ -80,6 +80,12 @@ public class ItemFactoryManager : MonoBehaviour
         int i = Random.Range(0, weaponPrefabs.Length);
         GameObject g = GameObject.Instantiate(weaponPrefabs[i], pos, Quaternion.identity);
         return g.GetComponent<WeaponController>();
+    }
+
+    public GameObject GetRandomPowerUp(Vector3 pos)
+    {
+        int i = Random.Range(0, powerUpsPrefabs.Length);
+        return GameObject.Instantiate(powerUpsPrefabs[i], pos, Quaternion.identity);
     }
 
     internal void Restart()

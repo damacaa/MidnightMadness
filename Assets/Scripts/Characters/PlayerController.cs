@@ -6,14 +6,12 @@ public class PlayerController : CharacterController
 {
     public static PlayerController instance;
 
-    Animator animator;
+    public Animator animator;
     public bool injured = false;
+    public bool dead = false;
     public bool infiniteHealth = false;
-
-    private void Start()
-    {
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(0,-2500));
-    }
+    public GameObject bloodTrail;
+    public GameObject throwUp;
 
     private new void Awake()
     {
@@ -29,6 +27,7 @@ public class PlayerController : CharacterController
         attackController = GetComponent<AttackController>();
         movementController = GetComponent<MovementController>();
         animator = GetComponent<Animator>();
+        bloodTrail.SetActive(false);
     }
 
     private void Update()
@@ -55,10 +54,12 @@ public class PlayerController : CharacterController
 
     public override void Hurt()
     {
-        if (GameManager.pause)
+        if (GameManager.pause || infiniteHealth)
             return;
 
         AudioManager.instance.PlayOnce("quejido1");
+        GameManager.instance.SplashBlood(transform.position);
+
         if (injured)
         {
             Die();
@@ -66,18 +67,25 @@ public class PlayerController : CharacterController
         else
         {
             injured = true;
+            bloodTrail.SetActive(true);
         }
     }
 
     public void Heal()
     {
         injured = false;
+        bloodTrail.SetActive(false);
     }
 
     public new void Die()
     {
         //GameManager.RestartGame();
-        movementController.Move(0, 0);
+        animator.SetTrigger("GetHurt");
+        //animator.enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+        movementController.canMove = false;
+        dead = true;
+        //movementController.Move(0, 0);
         GameManager.EndGame();
     }
 
@@ -114,5 +122,20 @@ public class PlayerController : CharacterController
             animator.SetTrigger("Recover");
         else
             animator.SetTrigger("GetHurt");
+    }
+
+    public void ThrowUp()
+    {
+        animator.SetTrigger("ThrowUp");
+        GameObject.Instantiate(throwUp).transform.position = transform.position - new Vector3(0, .3f, 0);
+    }
+    public void Recover()
+    {
+        animator.SetTrigger("Recover");
+    }
+
+    public void ComeOut()
+    {
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, -2500));
     }
 }

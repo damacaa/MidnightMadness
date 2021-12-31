@@ -38,11 +38,32 @@ public class EnemyBehaviour : CharacterController
         ScoreManager.instance.AddScore(score);
         attackController.DropWeapon();
         EnemyFactoryManager.instance.DecreaseEnemyCounter();
+        isAwake = false;
+        spriteRenderer.sprite = hurtSprite;
+        GetComponent<Collider2D>().enabled = false;
+        if (Random.value > .9f)
+            ItemFactoryManager.instance.GetRandomPowerUp(transform.position);
+        StartCoroutine(DestroyAfter(5f));
+    }
+
+    IEnumerator DestroyAfter(float t)
+    {
+        yield return new WaitForSeconds(t);
         Destroy(gameObject);
+        GameManager.instance.SplashBlood(transform.position);
+        yield return null;
     }
 
     private void Update()
     {
+        if (PlayerController.instance.dead)
+        {
+            agent.enabled = true;
+            agent.destination = EnemyFactoryManager.instance.transform.GetChild(0).position;
+            Destroy(this);
+            return;
+        }
+
         if (!target || GameManager.pause || !isAwake || !PlayerController.instance.isAwake)
         {
             agent.enabled = false;

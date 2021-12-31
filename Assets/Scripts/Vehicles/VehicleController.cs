@@ -8,8 +8,7 @@ public class VehicleController : MonoBehaviour
     public float speed = 10f;
     public float handling = 1f;
     public float drifFactor = 0.95f;
-    public Color paintColor;
-    public SpriteRenderer[] colorChangingParts;
+    
     public GameObject[] ligths;
     bool turnedOn = false;
 
@@ -37,10 +36,7 @@ public class VehicleController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         passengers = new CharacterController[seats.Length];
 
-        foreach (SpriteRenderer s in colorChangingParts)
-        {
-            s.color = paintColor;
-        }
+        
     }
 
     GameObject tireMarkLeft;
@@ -164,13 +160,5 @@ public class VehicleController : MonoBehaviour
     }
     public void Explode() { }
 
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        foreach (SpriteRenderer s in colorChangingParts)
-        {
-            s.color = paintColor;
-        }
-    }
-#endif
+
 }
