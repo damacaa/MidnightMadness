@@ -12,8 +12,9 @@ public class PlayerController : CharacterController
 
     private void Start()
     {
-
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(0,-2500));
     }
+
     private new void Awake()
     {
         base.Awake();

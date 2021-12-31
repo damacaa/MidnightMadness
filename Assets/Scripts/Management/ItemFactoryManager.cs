@@ -75,6 +75,13 @@ public class ItemFactoryManager : MonoBehaviour
         return new Vector2(x,y);
     }
 
+    public WeaponController GetRandomWeapon(Vector3 pos = new Vector3())
+    {
+        int i = Random.Range(0, weaponPrefabs.Length);
+        GameObject g = GameObject.Instantiate(weaponPrefabs[i], pos, Quaternion.identity);
+        return g.GetComponent<WeaponController>();
+    }
+
     internal void Restart()
     {
         Continue();
