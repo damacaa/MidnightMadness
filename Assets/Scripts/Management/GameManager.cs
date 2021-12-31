@@ -6,11 +6,18 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public static bool gameEnd = false;
-    public static float gameEndTime = 0;
-    public static bool pause = false;
+    public bool gameEnd = false;
+    public float gameEndTime = 0;
+    public bool pause = false;
 
     public GameObject bloodSplash;
+
+    float gameSpeed = 1f;
+
+    public DoormanBehaviour doorman;
+    public GameObject doormanDialog;
+    public GameObject doormanDialogEnd;
+    public GameObject endDialog;
 
     private void Awake()
     {
@@ -30,7 +37,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public static void EndGame()
+    public void EndGame()
     {
         gameEnd = true;
         gameEndTime = Time.time;
@@ -38,9 +45,11 @@ public class GameManager : MonoBehaviour
         InputManager.instance.locked = true;
     }
 
-    public static void RestartGame()
+    public void RestartGame()
     {
-        gameEnd = false;
+
+        gameSpeed = 1f;
+        /*gameEnd = false;
 
         EnemyBehaviour[] enemies = FindObjectsOfType<EnemyBehaviour>();
         foreach (EnemyBehaviour enemy in enemies)
@@ -61,34 +70,34 @@ public class GameManager : MonoBehaviour
         EnemyFactoryManager.instance.Restart();
         ScoreManager.instance.Restart();
         InputManager.instance.locked = false;
-        UIManager.instance.HideEnd();
+        UIManager.instance.HideEnd();*/
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public static void GoToMenu()
+    public void GoToMenu()
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
 
-    public static void PauseGame()
+    public void PauseGame()
     {
         pause = true;
         Time.timeScale = 0;
     }
 
-    public static void ResumeGame()
+    public void ResumeGame()
     {
         pause = false;
-        Time.timeScale = 1;
+        Time.timeScale = gameSpeed;
     }
 
-    public static void StartGame()
+    public void StartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
-    public static void ExitGame()
+    public void ExitGame()
     {
         Application.Quit();
     }
@@ -98,9 +107,18 @@ public class GameManager : MonoBehaviour
         GameObject.Instantiate(bloodSplash).transform.position = pos;
     }
 
-    public static void Victory()
+    public void Victory()
     {
-        Debug.Log("Victoria");
+        doorman.MoveRight();
+        doormanDialog.SetActive(false);
+        doormanDialogEnd.SetActive(true);
+
+        endDialog.SetActive(true);
     }
 
+    public void IncreaseGameSpeed()
+    {
+        gameSpeed -= .05f;
+        Time.timeScale = gameSpeed;
+    }
 }

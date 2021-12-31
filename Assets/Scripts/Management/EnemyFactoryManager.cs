@@ -44,7 +44,7 @@ public class EnemyFactoryManager : MonoBehaviour
     {
         if(currentWave == waves)
         {
-            GameManager.Victory();
+            GameManager.instance.Victory();
             return;
         }
 

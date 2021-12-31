@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerController : CharacterController
 {
@@ -12,6 +13,7 @@ public class PlayerController : CharacterController
     public bool infiniteHealth = false;
     public GameObject bloodTrail;
     public GameObject throwUp;
+    public Transform endGame;
 
     private new void Awake()
     {
@@ -32,7 +34,7 @@ public class PlayerController : CharacterController
 
     private void Update()
     {
-        if (GameManager.gameEnd || GameManager.pause || !isAwake)
+        if (GameManager.instance.gameEnd || GameManager.instance.pause || !isAwake)
             return;
     }
 
@@ -54,7 +56,7 @@ public class PlayerController : CharacterController
 
     public override void Hurt()
     {
-        if (GameManager.pause || infiniteHealth)
+        if (GameManager.instance.pause || infiniteHealth)
             return;
 
         AudioManager.instance.PlayOnce("quejido1");
@@ -86,7 +88,7 @@ public class PlayerController : CharacterController
         movementController.canMove = false;
         dead = true;
         //movementController.Move(0, 0);
-        GameManager.EndGame();
+        GameManager.instance.EndGame();
     }
 
     public void GetInCar(VehicleController v)
@@ -137,5 +139,19 @@ public class PlayerController : CharacterController
     public void ComeOut()
     {
         GetComponent<Rigidbody2D>().AddForce(new Vector2(0, -2500));
+    }
+
+    public void GoInside()
+    {
+        movementController.canMove = false;
+
+        NavMeshAgent agent = GetComponent<NavMeshAgent>();
+        agent.enabled = true;
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
+
+        agent.destination = endGame.position;
+
+
     }
 }

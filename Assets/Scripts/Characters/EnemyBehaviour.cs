@@ -64,7 +64,7 @@ public class EnemyBehaviour : CharacterController
             return;
         }
 
-        if (!target || GameManager.pause || !isAwake || !PlayerController.instance.isAwake)
+        if (!target || GameManager.instance.pause || !isAwake || !PlayerController.instance.isAwake)
         {
             agent.enabled = false;
             return;
