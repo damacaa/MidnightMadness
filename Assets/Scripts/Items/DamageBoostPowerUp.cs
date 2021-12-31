@@ -6,11 +6,11 @@ public class DamageBoostPowerUp : PowerUp
 {
     protected override void Effect()
     {
-
+        AudioManager.instance.PlayOnce("recogerPorro");
         if (!PlayerController.instance.injured)
             return;
 
-        AudioManager.instance.PlayOnce("recogerCocacola");
+        
         PlayerController.instance.Heal();
         Destroy(gameObject);
     }
