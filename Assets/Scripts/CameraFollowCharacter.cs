@@ -76,7 +76,7 @@ public class CameraFollowCharacter : MonoBehaviour
 
     public void BackToNormal()
     {
-        normalFollow = true;
+        
         if (currentCoroutine != null)
         {
             StopCoroutine(currentCoroutine);
@@ -115,6 +115,7 @@ public class CameraFollowCharacter : MonoBehaviour
             yield return null;
         }
         currentCoroutine = null;
+        normalFollow = true;
         yield return null;
     }
 
