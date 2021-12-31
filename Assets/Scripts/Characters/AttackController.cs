@@ -66,7 +66,7 @@ public class AttackController : MonoBehaviour
         return "-/-";
     }
 
-    void PickupWeapon(WeaponController weap)
+    public void PickupWeapon(WeaponController weap)
     {
         weapon = weap;
         weapon.GetComponent<Collider2D>().enabled = false;
