@@ -82,7 +82,7 @@ public class AttackController : MonoBehaviour
 
         if (weapon.currentAmmo == 0)
             weapon.Reload();
-
+        AudioManager.instance.PlayOnce("recogerArma");
         GetComponentInParent<CharacterController>().UpdateSprite();
     }
 

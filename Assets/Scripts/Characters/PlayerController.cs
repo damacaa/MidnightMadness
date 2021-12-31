@@ -92,6 +92,7 @@ public class PlayerController : CharacterController
             transform.position = driverSeat.position;
             transform.rotation = driverSeat.rotation;
         }
+        AudioManager.instance.PlayOnce("cocheArrancando");
     }
 
     public void ExitCar()
